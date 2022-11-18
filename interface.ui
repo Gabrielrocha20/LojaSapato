@@ -95,7 +95,7 @@ background-color: rgb(84, 93, 139);
            <item>
             <widget class="QStackedWidget" name="stackedWidget">
              <property name="currentIndex">
-              <number>1</number>
+              <number>0</number>
              </property>
              <widget class="QWidget" name="CadastroClientePage">
               <layout class="QVBoxLayout" name="verticalLayout">
@@ -547,6 +547,16 @@ border-radius:10px
                     </column>
                     <column>
                      <property name="text">
+                      <string>Par/Pe</string>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
                       <string>Data Prazo</string>
                      </property>
                      <property name="font">
@@ -587,7 +597,27 @@ border-radius:10px
                     </column>
                     <column>
                      <property name="text">
+                      <string>Sinal</string>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
                       <string>Nome</string>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Funcionario</string>
                      </property>
                      <property name="font">
                       <font>
@@ -626,6 +656,162 @@ color: rgb(0, 0, 0);
                   <enum>QFrame::Raised</enum>
                  </property>
                  <layout class="QGridLayout" name="gridLayout_5">
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="label_5">
+                    <property name="maximumSize">
+                     <size>
+                      <width>80</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>Telefone:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="6" column="0">
+                   <widget class="QLabel" name="label_4">
+                    <property name="text">
+                     <string>Preço:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="3" column="0">
+                   <widget class="QLabel" name="label_7">
+                    <property name="maximumSize">
+                     <size>
+                      <width>50</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>Cor:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="3">
+                   <widget class="QLineEdit" name="InputTelefoneProduto">
+                    <property name="maximumSize">
+                     <size>
+                      <width>250</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="6" column="3">
+                   <widget class="QLineEdit" name="InputPreco">
+                    <property name="maximumSize">
+                     <size>
+                      <width>250</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="8" column="3">
+                   <widget class="QDateTimeEdit" name="InputPrazo">
+                    <property name="minimumSize">
+                     <size>
+                      <width>50</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>250</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="dateTime">
+                     <datetime>
+                      <hour>9</hour>
+                      <minute>0</minute>
+                      <second>0</second>
+                      <year>2022</year>
+                      <month>11</month>
+                      <day>10</day>
+                     </datetime>
+                    </property>
+                    <property name="maximumTime">
+                     <time>
+                      <hour>23</hour>
+                      <minute>59</minute>
+                      <second>0</second>
+                     </time>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="7" column="0">
+                   <widget class="QLabel" name="label_13">
+                    <property name="text">
+                     <string>Sinal</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="7" column="3">
+                   <widget class="QLineEdit" name="InputSinal">
+                    <property name="maximumSize">
+                     <size>
+                      <width>250</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QLabel" name="label_6">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>80</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>Produto:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="8" column="0">
+                   <widget class="QLabel" name="label_8">
+                    <property name="text">
+                     <string>Prazo:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="5" column="0">
+                   <widget class="QLabel" name="label">
+                    <property name="text">
+                     <string>Serviço:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="5" column="3">
+                   <widget class="QLineEdit" name="InputServico">
+                    <property name="maximumSize">
+                     <size>
+                      <width>250</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="3">
+                   <widget class="QLineEdit" name="InputProduto">
+                    <property name="maximumSize">
+                     <size>
+                      <width>250</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
                   <item row="3" column="3">
                    <widget class="QFrame" name="frame_7">
                     <property name="styleSheet">
@@ -765,143 +951,44 @@ border-radius:3px
                     </layout>
                    </widget>
                   </item>
-                  <item row="4" column="3">
-                   <widget class="QLineEdit" name="InputServico">
-                    <property name="maximumSize">
-                     <size>
-                      <width>250</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                   </widget>
-                  </item>
                   <item row="4" column="0">
-                   <widget class="QLabel" name="label">
+                   <widget class="QLabel" name="label_14">
                     <property name="text">
-                     <string>Serviço:</string>
+                     <string>Par/Pe</string>
                     </property>
                    </widget>
                   </item>
-                  <item row="1" column="0">
-                   <widget class="QLabel" name="label_6">
-                    <property name="minimumSize">
-                     <size>
-                      <width>0</width>
-                      <height>0</height>
-                     </size>
+                  <item row="4" column="3">
+                   <widget class="QFrame" name="frame_24">
+                    <property name="styleSheet">
+                     <string notr="true">QRadioButton {
+font: 75 8pt &quot;MS Shell Dlg 2&quot;;
+	background-color: rgba(105, 105, 156, 0.5);
+border-radius:3px
+}</string>
                     </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>80</width>
-                      <height>16777215</height>
-                     </size>
+                    <property name="frameShape">
+                     <enum>QFrame::StyledPanel</enum>
                     </property>
-                    <property name="text">
-                     <string>Produto:</string>
+                    <property name="frameShadow">
+                     <enum>QFrame::Raised</enum>
                     </property>
-                   </widget>
-                  </item>
-                  <item row="6" column="0">
-                   <widget class="QLabel" name="label_8">
-                    <property name="text">
-                     <string>Prazo:</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="3">
-                   <widget class="QLineEdit" name="InputTelefoneProduto">
-                    <property name="maximumSize">
-                     <size>
-                      <width>250</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="0">
-                   <widget class="QLabel" name="label_5">
-                    <property name="maximumSize">
-                     <size>
-                      <width>80</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Telefone:</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="3">
-                   <widget class="QLineEdit" name="InputProduto">
-                    <property name="maximumSize">
-                     <size>
-                      <width>250</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="3" column="0">
-                   <widget class="QLabel" name="label_7">
-                    <property name="maximumSize">
-                     <size>
-                      <width>50</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Cor:</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="5" column="3">
-                   <widget class="QLineEdit" name="InputPreco">
-                    <property name="maximumSize">
-                     <size>
-                      <width>250</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="6" column="3">
-                   <widget class="QDateTimeEdit" name="InputPrazo">
-                    <property name="minimumSize">
-                     <size>
-                      <width>50</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>250</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                    <property name="dateTime">
-                     <datetime>
-                      <hour>9</hour>
-                      <minute>0</minute>
-                      <second>0</second>
-                      <year>2022</year>
-                      <month>11</month>
-                      <day>10</day>
-                     </datetime>
-                    </property>
-                    <property name="maximumTime">
-                     <time>
-                      <hour>23</hour>
-                      <minute>59</minute>
-                      <second>0</second>
-                     </time>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="5" column="0">
-                   <widget class="QLabel" name="label_4">
-                    <property name="text">
-                     <string>Preço:</string>
-                    </property>
+                    <layout class="QGridLayout" name="gridLayout_27">
+                     <item row="0" column="0">
+                      <widget class="QRadioButton" name="radioPe">
+                       <property name="text">
+                        <string>Pe</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QRadioButton" name="radioPar">
+                       <property name="text">
+                        <string>Par</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
                    </widget>
                   </item>
                  </layout>
@@ -935,7 +1022,7 @@ background-color: rgb(29, 196, 196);
                   <item row="0" column="1">
                    <widget class="QPushButton" name="btnCadastrarImprimir">
                     <property name="enabled">
-                     <bool>false</bool>
+                     <bool>true</bool>
                     </property>
                     <property name="minimumSize">
                      <size>
@@ -1101,11 +1188,185 @@ border-radius:10px
 background-color: rgb(226, 226, 226);
 border-radius:10px</string>
                         </property>
-                        <column>
-                         <property name="text">
-                          <string notr="true">1</string>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QFrame" name="frame_25">
+                        <property name="minimumSize">
+                         <size>
+                          <width>0</width>
+                          <height>0</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>0</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {
+background-color: rgba(150, 158, 231, 0.8);
+border-radius: 3px;
+}
+
+QPushButton:hover {
+background-color: rgb(150, 158, 231);
+}</string>
+                        </property>
+                        <property name="frameShape">
+                         <enum>QFrame::StyledPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                         <enum>QFrame::Raised</enum>
+                        </property>
+                        <layout class="QGridLayout" name="gridLayout_28">
+                         <property name="leftMargin">
+                          <number>0</number>
                          </property>
-                        </column>
+                         <property name="topMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="rightMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="bottomMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="spacing">
+                          <number>0</number>
+                         </property>
+                         <item row="0" column="1" colspan="2">
+                          <widget class="QFrame" name="frame_27">
+                           <property name="maximumSize">
+                            <size>
+                             <width>16777215</width>
+                             <height>100</height>
+                            </size>
+                           </property>
+                           <property name="frameShape">
+                            <enum>QFrame::StyledPanel</enum>
+                           </property>
+                           <property name="frameShadow">
+                            <enum>QFrame::Raised</enum>
+                           </property>
+                           <layout class="QGridLayout" name="gridLayout_29">
+                            <item row="0" column="0">
+                             <widget class="QLabel" name="label_15">
+                              <property name="minimumSize">
+                               <size>
+                                <width>0</width>
+                                <height>0</height>
+                               </size>
+                              </property>
+                              <property name="maximumSize">
+                               <size>
+                                <width>125</width>
+                                <height>25</height>
+                               </size>
+                              </property>
+                              <property name="font">
+                               <font>
+                                <pointsize>15</pointsize>
+                                <weight>75</weight>
+                                <bold>true</bold>
+                               </font>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">background-color: none;</string>
+                              </property>
+                              <property name="text">
+                               <string>Filtros</string>
+                              </property>
+                              <property name="alignment">
+                               <set>Qt::AlignCenter</set>
+                              </property>
+                             </widget>
+                            </item>
+                           </layout>
+                          </widget>
+                         </item>
+                         <item row="1" column="1" colspan="2">
+                          <widget class="QFrame" name="frame_26">
+                           <property name="frameShape">
+                            <enum>QFrame::StyledPanel</enum>
+                           </property>
+                           <property name="frameShadow">
+                            <enum>QFrame::Raised</enum>
+                           </property>
+                           <layout class="QGridLayout" name="gridLayout_30">
+                            <item row="1" column="0">
+                             <widget class="QLineEdit" name="inputFiltro">
+                              <property name="minimumSize">
+                               <size>
+                                <width>0</width>
+                                <height>25</height>
+                               </size>
+                              </property>
+                              <property name="font">
+                               <font>
+                                <family>Segoe MDL2 Assets</family>
+                                <pointsize>12</pointsize>
+                                <weight>50</weight>
+                                <italic>false</italic>
+                                <bold>false</bold>
+                               </font>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">QLineEdit {
+background-color:white;
+border-radius: 10px;
+color: black;
+font: 12pt &quot;Segoe MDL2 Assets&quot;;
+}
+QLineEdit:hover {
+border:2px solid rgb(255, 242, 79);
+border-radius: 10px
+}</string>
+                              </property>
+                              <property name="alignment">
+                               <set>Qt::AlignCenter</set>
+                              </property>
+                              <property name="placeholderText">
+                               <string>Campo</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item row="0" column="0">
+                             <widget class="QLabel" name="label_16">
+                              <property name="maximumSize">
+                               <size>
+                                <width>16777215</width>
+                                <height>400</height>
+                               </size>
+                              </property>
+                              <property name="font">
+                               <font>
+                                <pointsize>10</pointsize>
+                               </font>
+                              </property>
+                              <property name="text">
+                               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Para filtrar&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;basta escrever&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;o campo que&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;quer filtrar&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;EX:01/11&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;vai filtrar o dia,&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;Par&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;vai filtrar so produtos &lt;/p&gt;&lt;p align=&quot;center&quot;&gt;que sao Par&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;Fulano&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;So os produtos com &lt;/p&gt;&lt;p align=&quot;center&quot;&gt;esse nome&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item row="2" column="0">
+                             <widget class="QPushButton" name="btnFiltrar">
+                              <property name="minimumSize">
+                               <size>
+                                <width>0</width>
+                                <height>25</height>
+                               </size>
+                              </property>
+                              <property name="text">
+                               <string>Filtrar</string>
+                              </property>
+                             </widget>
+                            </item>
+                           </layout>
+                          </widget>
+                         </item>
+                        </layout>
                        </widget>
                       </item>
                      </layout>
@@ -1195,6 +1456,25 @@ background-color: rgb(29, 196, 196);
                     </property>
                     <property name="text">
                      <string>Produtos</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="2">
+                   <widget class="QPushButton" name="btnFiltro">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>25</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>100</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>Filtros</string>
                     </property>
                    </widget>
                   </item>
@@ -1516,6 +1796,16 @@ border-radius:10px</string>
                     </column>
                     <column>
                      <property name="text">
+                      <string>Par_pe</string>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
                       <string>Data Prazo</string>
                      </property>
                      <property name="font">
@@ -1556,7 +1846,27 @@ border-radius:10px</string>
                     </column>
                     <column>
                      <property name="text">
+                      <string>Sinal</string>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
                       <string>Nome</string>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Funcionario</string>
                      </property>
                      <property name="font">
                       <font>

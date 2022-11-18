@@ -9,11 +9,12 @@ from unittest import result
 
 class CrudLoja:
     def __init__(self, nome=None, telefone=None, servico=None, cor=None,
-                 produto=None, preco=None, prazo=None, produtos=None, clientes=None, o_s=None, login=None, senha=None):
+                 produto=None, preco=None, prazo=None, par_pe=None, filtro=None, produtos=None, sinal=None, clientes=None, o_s=None, funcionario=None, login=None, senha=None):
 
         self.produto = produto
         self.prazo = prazo
         self.nome = nome
+        self.par_pe = par_pe
         self.telefone = telefone
         self.cor = cor
         self.servico = servico
@@ -21,6 +22,11 @@ class CrudLoja:
         self.produtos = produtos
         self.clientes = clientes
         self.o_s = o_s
+        self.sinal = sinal
+        self.funcionario = funcionario
+
+        # filtros
+        self.filtro = filtro
 
         self.login = login
         self.senha = senha
@@ -66,9 +72,10 @@ class CrudLoja:
                 "Data_Prazo"	TEXT,
                 "Preço"	TEXT,
                 "Funcionario"	TEXT,
+                "Sinal"	TEXT,
+                "Par_pe"	TEXT,
                 PRIMARY KEY("ID" AUTOINCREMENT)
             )
-                );
                 """
             )
         try:
@@ -87,7 +94,20 @@ class CrudLoja:
                 "Administrador"	TEXT,
                 PRIMARY KEY("ID" AUTOINCREMENT)
             )
+                """
             )
+        try:
+            sql_Produto = 'SELECT * FROM Horarios_acesso'
+            self.cursor.execute(sql_Produto)
+        except sqlite3.OperationalError as e:
+            self.cursor.execute(
+                """
+                CREATE TABLE "Horarios_acesso" (
+                    "ID"	INTEGER UNIQUE,
+                    "ID_Funcionario"	INTEGER,
+                    "Hora_acesso"	TEXT,
+                    PRIMARY KEY("ID" AUTOINCREMENT)
+                )
                 """
             )
     
@@ -109,6 +129,17 @@ class CrudLoja:
             self.cliente = 'Funcionario Cadastrado'
         else:
             self.cliente = 'Funcionario Ja cadastrado'
+        
+        checar_funcionario = f'SELECT * FROM Funcionario WHERE Telefone = "{self.telefone}"'
+        cursor.execute(checar_funcionario)
+        checar_funcionario = cursor.fetchall()
+        if len(checar_funcionario) == 0:
+            id_funcionario = checar_funcionario[0][0]
+            cadastro = f'INSERT INTO Horarios_acesso (ID_Funcionario, Hora_acesso) VALUES ("{id_funcionario}", "{data_formatada}")'
+            cursor.execute(cadastro)
+
+
+        
 
         self.con.commit()
     def read_funcionario(self):
@@ -131,7 +162,8 @@ class CrudLoja:
         data_formatada = datetime.strftime(data, "%d/%m/%Y %H:%M")
         
         sql = f'UPDATE Funcionario SET Hora_entrada = "{data_formatada}" WHERE ID = {identificador}'
-        cursor.execute(sql)
+        up_hora = f'INSERT INTO Horarios_acesso (ID_Funcionario, Hora_acesso) VALUES ("{identificador}", "{data_formatada}")'
+        cursor.execute(up_hora)
         self.con.commit()
         return
     
@@ -207,6 +239,24 @@ class CrudLoja:
                 resultados.append(i)
             self.resultados = resultados
             return
+        elif self.produtos == 'filtro':
+            sql = f"""SELECT * FROM Produto WHERE
+            ID LIKE '%{self.filtro}%' OR
+            Produto LIKE '%{self.filtro}%' OR
+            Cor LIKE '%{self.filtro}%' OR
+            Serviço LIKE '%{self.filtro}%' OR
+            Hora_entrada LIKE '%{self.filtro}%' OR
+            Hora_saida LIKE '%{self.filtro}%' OR
+            Data_Prazo LIKE '%{self.filtro}%' OR
+            Par_pe LIKE '%{self.filtro}%'"""
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            resultados = []
+            for i in results:
+                resultados.append(i)
+            self.resultados = resultados
+            print('foi')
+            return
         sql = 'SELECT * FROM Produto'
         cursor.execute(sql)
         results = cursor.fetchall()
@@ -214,20 +264,6 @@ class CrudLoja:
         for i in results:
             resultados.append(i)
         self.resultados = resultados
-        diretorio = fr'C:\Users\{self.username}\Desktop'
-        if os.path.exists(diretorio):
-            pass
-        else:
-            diretorio = fr'C:\Users\{self.username}\OneDrive\Área de Trabalho'
-        diretorio = diretorio + '\\relatorio_Produtos.txt'
-        with open(diretorio, 'w') as novo_arquivo:
-            novo_arquivo.write('Sapataria.              Registro de Produtos\n')
-            novo_arquivo.write('-' * 90 + '\n')
-            novo_arquivo.write('Nome   |      Produto     |      Cor        |      Serviço      |      Data Prazo      |      Hora entrada      |      Hora saida     |      Preço     | \n')
-
-            for Id, produto, cor, servico, cliente, hora_entrada, hora_saida, telefone, prazo, preco in results:
-
-                novo_arquivo.write(f'{cliente:<14} {produto:<19} {cor:<16} {servico:<18} {prazo:<18} {hora_entrada:<27} {hora_saida:<27} {preco}\n')
 
     def create_cliente(self):
         cursor = self.con.cursor()
@@ -259,6 +295,9 @@ class CrudLoja:
         telefone = self.telefone
         servico = self.servico
         preco = self.preco
+        sinal = self.sinal
+        funcionario = self.funcionario
+        par_pe = self.par_pe
 
         data = datetime.now()
         data_formatada = datetime.strftime(data, "%d/%m/%Y %H:%M")
@@ -274,14 +313,14 @@ class CrudLoja:
         cursor.execute(checar_produto)
         checar_produto = cursor.fetchall()
 
-        if (len(produto) == 0) or (len(telefone) == 0) or (len(cor) == 0) or (len(servico) == 0) or (len(prazo) == 0):
+        if (len(produto) == 0) or (len(telefone) == 0) or (len(cor) == 0) or (len(servico) == 0) or (len(prazo) == 0) or (len(par_pe) == 0):
             return
         elif len(checar_cliente) == 0:
             self.cliente = 'Cliente Não existe ou Telefone invalido'
             
         else:
-            cadastro = f'INSERT INTO Produto (Produto, Cor, Serviço, Cliente, Hora_entrada, Hora_saida, Telefone, Data_Prazo, Preço) VALUES ("{produto}",\
-            "{cor}", "{servico}","{nome}", "{data_formatada}", "{0}", "{telefone}", "{prazo}", "{preco}")'
+            cadastro = f'INSERT INTO Produto (Produto, Cor, Serviço, Cliente, Hora_entrada, Hora_saida, Telefone, Data_Prazo, Preço, Funcionario, Sinal, Par_pe) VALUES ("{produto}",\
+            "{cor}", "{servico}","{nome}", "{data_formatada}", "{0}", "{telefone}", "{prazo}", "{preco}", "{funcionario}", "{sinal}", "{par_pe}")'
             cursor.execute(cadastro)
             self.cliente = 'Produto registrado'
         

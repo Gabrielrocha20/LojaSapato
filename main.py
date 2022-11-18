@@ -76,6 +76,8 @@ class Interface(QMainWindow, Ui_MainWindow):
 
         self.btnClientes.clicked.connect(self.mostrar_todos_clientes)
         self.btnProdutos.clicked.connect(self.mostrar_todos_produtos)
+        self.btnFiltro.clicked.connect(self.abrirfiltros)
+        self.btnFiltrar.clicked.connect(self.filtrar)
 
         self.btnCliente.clicked.connect(self.mostrar_cliente)
         self.btnProduto.clicked.connect(self.mostrar_produto)
@@ -88,6 +90,21 @@ class Interface(QMainWindow, Ui_MainWindow):
         self.senha = None
         
         self.dialogo = DialogBox()
+    
+    def abrirfiltros(self):
+        width = self.frame_25.width()
+
+        if width == 0:
+            newWidth = 200
+        else:
+            newWidth = 0
+        
+        self.animation = QtCore.QPropertyAnimation(self.frame_25, b'minimumWidth')
+        self.animation.setDuration(1000)
+        self.animation.setStartValue(width)
+        self.animation.setEndValue(newWidth)
+        self.animation.setEasingCurve(QtCore.QEasingCurve.InOutQuart)
+        self.animation.start()
     
     def logar_usuario(self):
         login = self.inputLogin.text()
@@ -167,13 +184,19 @@ class Interface(QMainWindow, Ui_MainWindow):
         check = self.dialogo.check
         if not check:
             return
-        self.btnCadastrarImprimir.setEnabled(True)
+
+        funcionario = self.dialogo.inputImprimirLogin.text()
         servico_cliente = self.InputServico.text()
         produto_cliente = self.InputProduto.text()
         telefone_cliente = self.InputTelefoneProduto.text()
         preco_cliente = self.InputPreco.text()
+        sinal = self.InputSinal.text()
         
         prazo = self.InputPrazo.text()
+
+        if sinal == '':
+            sinal = 0
+        sinal = float(sinal)
 
         radios = [self.radioBranco, self.radioPreto, self.radioAzul, self.radioVermelho, self.radioMarron,
         self.radioRosa, self.radioVerde, self.radioAmarelo, self.radioBege, self.radioLaranja, self.radioRoxo, self.radioBicolor,]
@@ -181,13 +204,19 @@ class Interface(QMainWindow, Ui_MainWindow):
         for radio in radios:
             if radio.isChecked():
                 cor_cliente.append(radio.text())
+        radios_parpe = [self.radioPar, self.radioPe]
+        par_pe_cliente = ''
+        for radio_parpe in radios_parpe:
+            if radio_parpe.isChecked():
+                par_pe_cliente = radio_parpe.text()
 
         preco_lista = preco_cliente.split('/')
         preco = 0
         for p in preco_lista:
             preco += float(p.replace(',','.'))
+        preco_sinal = preco - sinal
         cor_cliente = ','.join(cor_cliente)
-        cadastrar = CrudLoja(produto=produto_cliente, servico=servico_cliente, cor=cor_cliente, telefone=telefone_cliente, preco=preco, prazo=prazo, produtos='1')
+        cadastrar = CrudLoja(produto=produto_cliente, servico=servico_cliente, cor=cor_cliente, telefone=telefone_cliente, par_pe= par_pe_cliente, preco=preco, prazo=prazo, sinal=sinal, funcionario=funcionario, produtos='1')
         cadastrar.create_produto()
         cadastrar.mostrar_produtos()
 
@@ -200,7 +229,7 @@ class Interface(QMainWindow, Ui_MainWindow):
         
         font=QtGui.QFont() 
         font.setPointSize(12)        
-        child = QTreeWidgetItem(self.labelCadastrarProduto, [f'{resultado[0]}', f'{resultado[1]}', f'{resultado[2]}', f'{resultado[3]}', f'{resultado[8]}', f'{resultado[5]}', f'{resultado[6]}', f'{resultado[9]}', f'{resultado[4]}'])
+        child = QTreeWidgetItem(self.labelCadastrarProduto, [f'{resultado[0]}', f'{resultado[1]}', f'{resultado[2]}', f'{resultado[3]}', f'{resultado[12]}', f'{resultado[8]}', f'{resultado[5]}', f'{resultado[6]}', f'{resultado[9]}', f'{resultado[11]}', f'{resultado[4]}', f'{resultado[10]}'])
         for i, _ in enumerate(resultado):
             child.setFont(i , font)
 
@@ -229,12 +258,12 @@ class Interface(QMainWindow, Ui_MainWindow):
         cnv.drawString(0, 1165, f'O.S: {resultado[0]}')
         cnv.drawString(0, 1150, f'{resultado[5]}   Prazo: {resultado[8]}')
         cnv.drawString(0, 1135, f'____________________________________________')
-        cnv.drawString(0, 1120, f'Impresso por: {self.login}')
+        cnv.drawString(0, 1120, f'Impresso por: {funcionario}')
         cnv.drawString(0, 1105, f'____________________________________________')
         cnv.drawString(0, 1090, f'It Objeto    Cor: {resultado[2]}')
         cnv.drawString(0, 1075, f'Serviço: {resultado[3]}')
         cnv.drawString(0, 1060, f'____________________________________________')
-        cnv.drawString(0, 1045, f'{resultado[1]} {resultado[2]}')
+        cnv.drawString(0, 1045, f'{resultado[12]} {resultado[1]} {resultado[2]}')
         contador = 0
         y = 1030
         for servico in servicos:
@@ -247,8 +276,12 @@ class Interface(QMainWindow, Ui_MainWindow):
         cnv.drawString(0, y - 15, f' ___________________________________________')
         cnv.drawString(0, y - 30, f'                     SubTotal: R$ {preco}')
         cnv.drawString(0, y - 45, f'                     Desconto: R$ 00.00')
-        cnv.drawString(0, y - 60, f'                     Sinal:    R$ 00.00')
-        cnv.drawString(0, y - 75, f'                     Total:    R$ {preco}')
+        if sinal == 0:
+            cnv.drawString(0, y - 60, f'                     Sinal:    R$ 00.00')
+            cnv.drawString(0, y - 75, f'                     Total:    R$ {preco}')
+        else:
+            cnv.drawString(0, y - 60, f'                     Sinal:    R$ {sinal}')
+            cnv.drawString(0, y - 75, f'                     Total:    R$ {preco_sinal}')
         cnv.drawString(0, y - 90, f' ___________________________________________')
         cnv.drawString(0, y - 105, f' Prezado cliente! Preserve este Documento')
         cnv.drawString(0, y - 120, f' pois será através dele, que nossos')
@@ -279,7 +312,7 @@ class Interface(QMainWindow, Ui_MainWindow):
         cnvloja.drawString(0, 1165, f'O.S: {resultado[0]}')
         cnvloja.drawString(0, 1150, f'{resultado[5]}   Prazo: {resultado[8]}')
         cnvloja.drawString(0, 1135, f'____________________________________________')
-        cnvloja.drawString(0, 1120, f'Impresso por: {self.login}')
+        cnvloja.drawString(0, 1120, f'Impresso por: {funcionario}')
         cnvloja.drawString(0, 1105, f'____________________________________________')
         cnvloja.drawString(0, 1090, f'It Objeto    Cor: {resultado[2]}')
         cnvloja.drawString(0, 1075, f'Serviço: {resultado[3]}')
@@ -311,13 +344,13 @@ class Interface(QMainWindow, Ui_MainWindow):
         cnvloja.drawString(0, y - 225, f' DATA: __/__/____     Ass.:__________________')
         cnvloja.setPageSize((300, 840))
         cnvloja.save()
-        impressora = win32print.EnumPrinters(2)[1]
-        win32print.SetDefaultPrinter(impressora[2])
-        win32api.ShellExecute(0, "print", notaCliente, None, diretorio[:-16], 0)
+        # impressora = win32print.EnumPrinters(2)[1]
+        # win32print.SetDefaultPrinter(impressora[2])
+        # win32api.ShellExecute(0, "print", notaCliente, None, diretorio[:-16], 0)
 
-        impressora = win32print.EnumPrinters(2)[1]
-        win32print.SetDefaultPrinter(impressora[2])
-        win32api.ShellExecute(0, "print", notaLoja, None, notaLoja[:-13], 0)
+        # impressora = win32print.EnumPrinters(2)[1]
+        # win32print.SetDefaultPrinter(impressora[2])
+        # win32api.ShellExecute(0, "print", notaLoja, None, notaLoja[:-13], 0)
 
 
     def mostrar_todos_produtos(self):
@@ -326,11 +359,14 @@ class Interface(QMainWindow, Ui_MainWindow):
         self.labelClientesProdutos.headerItem().setText(1, "Produto")
         self.labelClientesProdutos.headerItem().setText(2, "Cor")
         self.labelClientesProdutos.headerItem().setText(3, "Serviço")
-        self.labelClientesProdutos.headerItem().setText(4, "Data Prazo")
-        self.labelClientesProdutos.headerItem().setText(5, "Hora Entrada")
-        self.labelClientesProdutos.headerItem().setText(6, "Hora Saida")
-        self.labelClientesProdutos.headerItem().setText(7, "Preço")
-        self.labelClientesProdutos.headerItem().setText(8, "Nome")
+        self.labelClientesProdutos.headerItem().setText(4, "Par/Pé")
+        self.labelClientesProdutos.headerItem().setText(5, "Data Prazo")
+        self.labelClientesProdutos.headerItem().setText(6, "Hora Entrada")
+        self.labelClientesProdutos.headerItem().setText(7, "Hora Saida")
+        self.labelClientesProdutos.headerItem().setText(8, "Sinal")
+        self.labelClientesProdutos.headerItem().setText(9, "Preço")
+        self.labelClientesProdutos.headerItem().setText(10, "Nome")
+        self.labelClientesProdutos.headerItem().setText(11, "Funcionario")
         produtos = CrudLoja(produtos='todos')
         produtos.mostrar_produtos()
         resultados = produtos.resultados
@@ -343,10 +379,41 @@ class Interface(QMainWindow, Ui_MainWindow):
         font=QtGui.QFont() 
         font.setPointSize(12) 
         for resultado in resultados:
-            child = QTreeWidgetItem(self.labelClientesProdutos, [f'{resultado[0]}', f'{resultado[1]}', f'{resultado[2]}', f'{resultado[3]}', f'{resultado[8]}', f'{resultado[5]}', f'{resultado[6]}', f'{resultado[9]}', f'{resultado[4]}'])
+            child = QTreeWidgetItem(self.labelClientesProdutos, [f'{resultado[0]}', f'{resultado[1]}', f'{resultado[2]}', f'{resultado[3]}', f'{resultado[12]}', f'{resultado[8]}', f'{resultado[5]}', f'{resultado[6]}', f'{resultado[9]}', f'{resultado[11]}', f'{resultado[4]}', f'{resultado[10]}'])
             for i, _ in enumerate(resultado):
                 child.setFont(i , font)
         
+    def filtrar(self):
+        self.labelClientesProdutos.clear()
+        self.labelClientesProdutos.headerItem().setText(0, "O.S")
+        self.labelClientesProdutos.headerItem().setText(1, "Produto")
+        self.labelClientesProdutos.headerItem().setText(2, "Cor")
+        self.labelClientesProdutos.headerItem().setText(3, "Serviço")
+        self.labelClientesProdutos.headerItem().setText(4, "Par/Pé")
+        self.labelClientesProdutos.headerItem().setText(5, "Data Prazo")
+        self.labelClientesProdutos.headerItem().setText(6, "Hora Entrada")
+        self.labelClientesProdutos.headerItem().setText(7, "Hora Saida")
+        self.labelClientesProdutos.headerItem().setText(8, "Sinal")
+        self.labelClientesProdutos.headerItem().setText(9, "Preço")
+        self.labelClientesProdutos.headerItem().setText(10, "Nome")
+        self.labelClientesProdutos.headerItem().setText(11, "Funcionario")
+        filtro = self.inputFiltro.text()
+        produtos = CrudLoja(filtro=filtro, produtos='filtro')
+        produtos.mostrar_produtos()
+        resultados = produtos.resultados
+        print(resultados)
+
+        arquivo = fr'C:\Users\{self.username}\Desktop\relatorio_Produtos.txt'
+        if os.path.isfile(arquivo):
+            pass
+        else:
+            arquivo = fr'C:\Users\{self.username}\OneDrive\Área de Trabalho\relatorio_Produtos.txt'
+        font=QtGui.QFont() 
+        font.setPointSize(12) 
+        for resultado in resultados:
+            child = QTreeWidgetItem(self.labelClientesProdutos, [f'{resultado[0]}', f'{resultado[1]}', f'{resultado[2]}', f'{resultado[3]}', f'{resultado[12]}', f'{resultado[8]}', f'{resultado[5]}', f'{resultado[6]}', f'{resultado[9]}', f'{resultado[11]}', f'{resultado[4]}', f'{resultado[10]}'])
+            for i, _ in enumerate(resultado):
+                child.setFont(i , font)
         
 
         # with open(arquivo, 'r') as relatorio:
@@ -392,11 +459,13 @@ class Interface(QMainWindow, Ui_MainWindow):
         self.labelClienteProduto.headerItem().setText(1, "Produto")
         self.labelClienteProduto.headerItem().setText(2, "Cor")
         self.labelClienteProduto.headerItem().setText(3, "Serviço")
-        self.labelClienteProduto.headerItem().setText(4, "Data Prazo")
-        self.labelClienteProduto.headerItem().setText(5, "Hora Entrada")
-        self.labelClienteProduto.headerItem().setText(6, "Hora Saida")
-        self.labelClienteProduto.headerItem().setText(7, "Preço")
-        self.labelClienteProduto.headerItem().setText(8, "Nome")
+        self.labelClienteProduto.headerItem().setText(4, "Par/Pé")
+        self.labelClienteProduto.headerItem().setText(5, "Data Prazo")
+        self.labelClienteProduto.headerItem().setText(6, "Hora Entrada")
+        self.labelClienteProduto.headerItem().setText(7, "Hora Saida")
+        self.labelClienteProduto.headerItem().setText(8, "Sinal")
+        self.labelClienteProduto.headerItem().setText(9, "Preço")
+        self.labelClienteProduto.headerItem().setText(10, "Nome")
 
         telefone_cliente = self.InputTelefoneClienteProduto.text()
         produtos = CrudLoja(telefone=telefone_cliente, produtos='1')
@@ -406,7 +475,7 @@ class Interface(QMainWindow, Ui_MainWindow):
             font=QtGui.QFont() 
             font.setPointSize(12) 
             for resultado in resultados:
-                child = QTreeWidgetItem(self.labelClienteProduto, [f'{resultado[0]}', f'{resultado[1]}', f'{resultado[2]}', f'{resultado[3]}', f'{resultado[8]}', f'{resultado[5]}', f'{resultado[6]}', f'{resultado[9]}', f'{resultado[4]}'])
+                child = QTreeWidgetItem(self.labelClienteProduto, [f'{resultado[0]}', f'{resultado[1]}', f'{resultado[2]}', f'{resultado[3]}', f'{resultado[12]}', f'{resultado[8]}', f'{resultado[5]}', f'{resultado[6]}', f'{resultado[9]}', f'{resultado[11]}', f'{resultado[4]}'])
                 for i, _ in enumerate(resultado):
                     child.setFont(i , font)
         # else:
@@ -450,7 +519,7 @@ class Interface(QMainWindow, Ui_MainWindow):
             resultado = resultado[-1]
             font=QtGui.QFont() 
             font.setPointSize(12)
-            child = QTreeWidgetItem(self.LabelFinalizar, [f'{resultado[0]}', f'{resultado[1]}', f'{resultado[2]}', f'{resultado[3]}', f'{resultado[8]}', f'{resultado[5]}', f'{resultado[6]}', f'{resultado[9]}', f'{resultado[4]}'])
+            child = QTreeWidgetItem(self.LabelFinalizar, [f'{resultado[0]}', f'{resultado[1]}', f'{resultado[2]}', f'{resultado[3]}', f'{resultado[12]}', f'{resultado[8]}', f'{resultado[5]}', f'{resultado[6]}', f'{resultado[9]}', f'{resultado[11]}', f'{resultado[4]}', f'{resultado[10]}'])
             for i, _ in enumerate(resultado):
                 child.setFont(i , font)
             return
@@ -477,7 +546,7 @@ class Interface(QMainWindow, Ui_MainWindow):
         resultado = resultado[-1]
         font=QtGui.QFont() 
         font.setPointSize(12)
-        child = QTreeWidgetItem(self.LabelFinalizar, [f'{resultado[0]}', f'{resultado[1]}', f'{resultado[2]}', f'{resultado[3]}', f'{resultado[8]}', f'{resultado[5]}', f'{resultado[6]}', f'{resultado[9]}', f'{resultado[4]}'])
+        child = QTreeWidgetItem(self.LabelFinalizar, [f'{resultado[0]}', f'{resultado[1]}', f'{resultado[2]}', f'{resultado[3]}', f'{resultado[12]}', f'{resultado[8]}', f'{resultado[5]}', f'{resultado[6]}', f'{resultado[9]}', f'{resultado[11]}', f'{resultado[4]}', f'{resultado[10]}'])
         for i, _ in enumerate(resultado):
             child.setFont(i , font)
         child = QTreeWidgetItem(self.LabelFinalizar, ['Finalizado!!'])
