@@ -2,6 +2,7 @@ import os.path
 import sys
 from os import getenv
 
+import pandas as pd
 import PyPDF2
 import win32api
 import win32print
@@ -31,7 +32,7 @@ class DialogBox(QDialog, Ui_Dialog):
         login = self.inputImprimirLogin.text()
         senha = self.inputImprimirSenha.text()
 
-        logar = CrudLoja(login=login, senha=senha)
+        logar = CrudLoja(login=login, senha=senha, funcionario=True)
         logar.read_funcionario()
         resultado = logar.resultados
         
@@ -110,7 +111,7 @@ class Interface(QMainWindow, Ui_MainWindow):
         login = self.inputLogin.text()
         senha = self.inputSenha.text()
 
-        logar = CrudLoja(login=login, senha=senha)
+        logar = CrudLoja(login=login, senha=senha, funcionario=False)
         logar.read_funcionario()
         resultado = logar.resultados
         
@@ -120,7 +121,7 @@ class Interface(QMainWindow, Ui_MainWindow):
             self.labelNomeFuncionario.setText(self.login)
             self.inputLogin.setText('')
             self.inputSenha.setText('')
-            if resultado[0][6] == 'True':
+            if resultado[0][3] == 'True':
                 self.btnPageCadastro.setEnabled(True)
                 self.btnPageCadastro.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             return self.PaginaCentral.setCurrentWidget(self.pageHome)
@@ -181,6 +182,7 @@ class Interface(QMainWindow, Ui_MainWindow):
             child.setFont(i , font)
     
     def cadastrar_produto(self):
+        self.labelCadastrarProduto.clear()
         check = self.dialogo.check
         if not check:
             return
@@ -191,20 +193,23 @@ class Interface(QMainWindow, Ui_MainWindow):
         telefone_cliente = self.InputTelefoneProduto.text()
         preco_cliente = self.InputPreco.text()
         sinal = self.InputSinal.text()
-        
         prazo = self.InputPrazo.text()
-
-        if sinal == '':
-            sinal = 0
-        sinal = float(sinal)
 
         radios = [self.radioBranco, self.radioPreto, self.radioAzul, self.radioVermelho, self.radioMarron,
         self.radioRosa, self.radioVerde, self.radioAmarelo, self.radioBege, self.radioLaranja, self.radioRoxo, self.radioBicolor,]
+
+        radios_parpe = [self.radioPar, self.radioPe]
+
+        if sinal == '':
+            sinal = 0
+        if not sinal.isdigit():
+            return
+        sinal = float(sinal)
+
         cor_cliente = []
         for radio in radios:
             if radio.isChecked():
                 cor_cliente.append(radio.text())
-        radios_parpe = [self.radioPar, self.radioPe]
         par_pe_cliente = ''
         for radio_parpe in radios_parpe:
             if radio_parpe.isChecked():
@@ -216,12 +221,16 @@ class Interface(QMainWindow, Ui_MainWindow):
             preco += float(p.replace(',','.'))
         preco_sinal = preco - sinal
         cor_cliente = ','.join(cor_cliente)
-        cadastrar = CrudLoja(produto=produto_cliente, servico=servico_cliente, cor=cor_cliente, telefone=telefone_cliente, par_pe= par_pe_cliente, preco=preco, prazo=prazo, sinal=sinal, funcionario=funcionario, produtos='1')
+        cadastrar = CrudLoja(produto=produto_cliente, 
+        servico=servico_cliente, cor=cor_cliente, 
+        telefone=telefone_cliente, par_pe= par_pe_cliente, 
+        preco=preco, prazo=prazo, sinal=sinal, 
+        funcionario=funcionario, produtos='1')
         cadastrar.create_produto()
         cadastrar.mostrar_produtos()
 
         if len(cadastrar.resultados) == 0:
-            self.labelCadastrarProduto.setText(f'Cliente nao existe ou Telefone incorreto')
+            child = QTreeWidgetItem(self.labelCadastrarProduto, ['Cliente', 'nao existe', 'ou Telefone', 'incorreto'])
             return
 
         resultado = cadastrar.resultados[-1]
@@ -229,7 +238,12 @@ class Interface(QMainWindow, Ui_MainWindow):
         
         font=QtGui.QFont() 
         font.setPointSize(12)        
-        child = QTreeWidgetItem(self.labelCadastrarProduto, [f'{resultado[0]}', f'{resultado[1]}', f'{resultado[2]}', f'{resultado[3]}', f'{resultado[12]}', f'{resultado[8]}', f'{resultado[5]}', f'{resultado[6]}', f'{resultado[9]}', f'{resultado[11]}', f'{resultado[4]}', f'{resultado[10]}'])
+        child = QTreeWidgetItem(self.labelCadastrarProduto, [
+            f'{resultado[0]}', f'{resultado[1]}', 
+            f'{resultado[2]}', f'{resultado[3]}', f'{resultado[4]}', 
+            f'{resultado[5]}', f'{resultado[6]}', f'{resultado[7]}', 
+            f'{resultado[8]}', f'{resultado[9]}', f'{resultado[10]}', 
+            f'{resultado[11]}'])
         for i, _ in enumerate(resultado):
             child.setFont(i , font)
 
@@ -244,7 +258,6 @@ class Interface(QMainWindow, Ui_MainWindow):
         cnv = canvas.Canvas(notaCliente)
         pdfmetrics.registerFont(TTFont('Vera', 'Vera.ttf'))
         cnv.setFont('Vera', 9)
-        # cnv.setFontSize(size='8')
         cnv.scale(0.9, 0.65)
         
         cnv.drawString(0, 1285, f'RÁPIDO DOS CALÇADOS            Cliente')
@@ -298,7 +311,6 @@ class Interface(QMainWindow, Ui_MainWindow):
         cnvloja = canvas.Canvas(notaLoja)
         pdfmetrics.registerFont(TTFont('Vera', 'Vera.ttf'))
         cnvloja.setFont('Vera', 9)
-        # cnv.setFontSize(size='8')
         cnvloja.scale(0.9, 0.65)
         
         cnvloja.drawString(0, 1285, f'RÁPIDO DOS CALÇADOS            Balcão')
@@ -379,9 +391,15 @@ class Interface(QMainWindow, Ui_MainWindow):
         font=QtGui.QFont() 
         font.setPointSize(12) 
         for resultado in resultados:
-            child = QTreeWidgetItem(self.labelClientesProdutos, [f'{resultado[0]}', f'{resultado[1]}', f'{resultado[2]}', f'{resultado[3]}', f'{resultado[12]}', f'{resultado[8]}', f'{resultado[5]}', f'{resultado[6]}', f'{resultado[9]}', f'{resultado[11]}', f'{resultado[4]}', f'{resultado[10]}'])
+            child = QTreeWidgetItem(self.labelClientesProdutos, [
+            f'{resultado[0]}', f'{resultado[1]}', 
+            f'{resultado[2]}', f'{resultado[3]}', f'{resultado[4]}', 
+            f'{resultado[5]}', f'{resultado[6]}', f'{resultado[7]}', 
+            f'{resultado[8]}', f'{resultado[9]}', f'{resultado[10]}', 
+            f'{resultado[11]}'])
             for i, _ in enumerate(resultado):
                 child.setFont(i , font)
+            self.create_file_excel(lista_dados=resultados, tabela='Produtos')
         
     def filtrar(self):
         self.labelClientesProdutos.clear()
@@ -400,8 +418,7 @@ class Interface(QMainWindow, Ui_MainWindow):
         filtro = self.inputFiltro.text()
         produtos = CrudLoja(filtro=filtro, produtos='filtro')
         produtos.mostrar_produtos()
-        resultados = produtos.resultados
-        print(resultados)
+        resultados = produtos.resultados 
 
         arquivo = fr'C:\Users\{self.username}\Desktop\relatorio_Produtos.txt'
         if os.path.isfile(arquivo):
@@ -411,17 +428,15 @@ class Interface(QMainWindow, Ui_MainWindow):
         font=QtGui.QFont() 
         font.setPointSize(12) 
         for resultado in resultados:
-            child = QTreeWidgetItem(self.labelClientesProdutos, [f'{resultado[0]}', f'{resultado[1]}', f'{resultado[2]}', f'{resultado[3]}', f'{resultado[12]}', f'{resultado[8]}', f'{resultado[5]}', f'{resultado[6]}', f'{resultado[9]}', f'{resultado[11]}', f'{resultado[4]}', f'{resultado[10]}'])
+            child = QTreeWidgetItem(self.labelClientesProdutos, [
+            f'{resultado[0]}', f'{resultado[1]}', 
+            f'{resultado[2]}', f'{resultado[3]}', f'{resultado[4]}', 
+            f'{resultado[5]}', f'{resultado[6]}', f'{resultado[7]}', 
+            f'{resultado[8]}', f'{resultado[9]}', f'{resultado[10]}', 
+            f'{resultado[11]}'])
             for i, _ in enumerate(resultado):
                 child.setFont(i , font)
         
-
-        # with open(arquivo, 'r') as relatorio:
-        #     self.labelClientesProdutos.setText(f'{relatorio.read()}\n'
-        #                                      f'\n'
-        #                                      f'\n'
-        #                                      f'Pré vizualização(O arquivo foi enviado para sua aréa de trabalho '
-        #                                      f'relatorio_Produtos.txt)')
     def mostrar_todos_clientes(self):
         self.labelClientesProdutos.clear()
         self.labelClientesProdutos.setColumnCount(3)
@@ -445,13 +460,8 @@ class Interface(QMainWindow, Ui_MainWindow):
             child = QTreeWidgetItem(self.labelClientesProdutos, [f'{resultado[2]}', f'{resultado[0]}', f'{resultado[1]}'])
             for i, _ in enumerate(resultado):
                 child.setFont(i , font)
+        self.create_file_excel(lista_dados=resultados, tabela='Clientes')
 
-        # with open(arquivo, 'r') as relatorio:
-        #     self.labelClientesProdutos.setText(f'{relatorio.read()}\n'
-        #                                      f'\n'
-        #                                      f'\n'
-        #                                      f'Pré vizualização(O arquivo foi enviado para sua aréa de trabalho '
-        #                                      f'relatorio_Clientes.txt)')
 
     def mostrar_produto(self):
         self.labelClienteProduto.clear()
@@ -475,7 +485,12 @@ class Interface(QMainWindow, Ui_MainWindow):
             font=QtGui.QFont() 
             font.setPointSize(12) 
             for resultado in resultados:
-                child = QTreeWidgetItem(self.labelClienteProduto, [f'{resultado[0]}', f'{resultado[1]}', f'{resultado[2]}', f'{resultado[3]}', f'{resultado[12]}', f'{resultado[8]}', f'{resultado[5]}', f'{resultado[6]}', f'{resultado[9]}', f'{resultado[11]}', f'{resultado[4]}'])
+                child = QTreeWidgetItem(self.labelClienteProduto, [
+            f'{resultado[0]}', f'{resultado[1]}', 
+            f'{resultado[2]}', f'{resultado[3]}', f'{resultado[4]}', 
+            f'{resultado[5]}', f'{resultado[6]}', f'{resultado[7]}', 
+            f'{resultado[8]}', f'{resultado[9]}', f'{resultado[10]}', 
+            f'{resultado[11]}'])
                 for i, _ in enumerate(resultado):
                     child.setFont(i , font)
         # else:
@@ -519,7 +534,12 @@ class Interface(QMainWindow, Ui_MainWindow):
             resultado = resultado[-1]
             font=QtGui.QFont() 
             font.setPointSize(12)
-            child = QTreeWidgetItem(self.LabelFinalizar, [f'{resultado[0]}', f'{resultado[1]}', f'{resultado[2]}', f'{resultado[3]}', f'{resultado[12]}', f'{resultado[8]}', f'{resultado[5]}', f'{resultado[6]}', f'{resultado[9]}', f'{resultado[11]}', f'{resultado[4]}', f'{resultado[10]}'])
+            child = QTreeWidgetItem(self.LabelFinalizar, [
+            f'{resultado[0]}', f'{resultado[1]}', 
+            f'{resultado[2]}', f'{resultado[3]}', f'{resultado[4]}', 
+            f'{resultado[5]}', f'{resultado[6]}', f'{resultado[7]}', 
+            f'{resultado[8]}', f'{resultado[9]}', f'{resultado[10]}', 
+            f'{resultado[11]}'])
             for i, _ in enumerate(resultado):
                 child.setFont(i , font)
             return
@@ -546,11 +566,76 @@ class Interface(QMainWindow, Ui_MainWindow):
         resultado = resultado[-1]
         font=QtGui.QFont() 
         font.setPointSize(12)
-        child = QTreeWidgetItem(self.LabelFinalizar, [f'{resultado[0]}', f'{resultado[1]}', f'{resultado[2]}', f'{resultado[3]}', f'{resultado[12]}', f'{resultado[8]}', f'{resultado[5]}', f'{resultado[6]}', f'{resultado[9]}', f'{resultado[11]}', f'{resultado[4]}', f'{resultado[10]}'])
+        child = QTreeWidgetItem(self.LabelFinalizar, [
+            f'{resultado[0]}', f'{resultado[1]}', 
+            f'{resultado[2]}', f'{resultado[3]}', f'{resultado[4]}', 
+            f'{resultado[5]}', f'{resultado[6]}', f'{resultado[7]}', 
+            f'{resultado[8]}', f'{resultado[9]}', f'{resultado[10]}', 
+            f'{resultado[11]}'])
         for i, _ in enumerate(resultado):
             child.setFont(i , font)
         child = QTreeWidgetItem(self.LabelFinalizar, ['Finalizado!!'])
         return 
+    
+    def create_file_excel(self, lista_dados, tabela):
+        if tabela == 'Clientes':
+            Nome = []
+            Telefone = []
+            ID_cliente = []
+            for row in lista_dados:
+                Nome.append(row[0])
+                Telefone.append(row[1])
+                ID_cliente.append(row[2])
+            dict_dados = {
+            "ID": ID_cliente, "Nome": Nome, "Telefone": Telefone}
+            dados = pd.DataFrame(data=dict_dados)
+            dados.to_excel('Clientes.xls')
+            return
+        else:
+            id_produto = []
+            produto = []
+            cor = []
+            servico = []
+            par_pe = []
+            data_prazo = []
+            hora_entrada = []
+            hora_saida = []
+            preco = []
+            sinal = []
+            cliente = []
+            funcionario = []
+            telefone = []
+            for row in lista_dados:
+                id_produto.append(row[0])
+                produto.append(row[1])
+                cor.append(row[2])
+                servico.append(row[3])
+                par_pe.append(row[4])
+                data_prazo.append(row[5])
+                hora_entrada.append(row[6])
+                hora_saida.append(row[7])
+                preco.append(row[8])
+                sinal.append(row[9])
+                cliente.append(row[10])
+                funcionario.append(row[11])
+                telefone.append(row[12])
+
+            dict_dados = {
+                "ID": id_produto, "Produto": produto, "Cor": cor,
+                "Serviço": servico, "Par_pe": par_pe, "Data_Prazo": data_prazo,
+                "Hora_entrada":	hora_entrada, "Hora_saida": hora_saida,
+                "Preço": preco, "Sinal": sinal, "Cliente": cliente,
+                "Funcionario": funcionario, "Telefone":	telefone}
+        
+
+            dados = pd.DataFrame(data=dict_dados)
+            dados.to_excel('produtos.xls')
+            return
+        # try:
+        #     dados.to_excel('produtos.xls')
+        # except:
+        #     os.remove('produtos.xls')
+        #     dados.to_excel('produtos.xls')
         
 if __name__ == '__main__':
     app = QApplication(sys.argv)
