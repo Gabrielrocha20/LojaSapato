@@ -141,9 +141,9 @@ class CrudLoja:
         if len(checar_funcionario) == 0:
             cadastro = f'INSERT INTO Contas (Login, Senha, Administrador) VALUES ("{self.login}", "{senha_hash}", "{self.adm}")'
             cursor.execute(cadastro)
-            self.cliente = 'Funcionario Cadastrado'
+            self.cliente = True
         else:
-            self.cliente = 'Funcionario Ja cadastrado'
+            self.cliente = False
 
         self.con.commit()
     def cadastrar_funcionario(self):

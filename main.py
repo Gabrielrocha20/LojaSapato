@@ -256,8 +256,7 @@ class Interface(QMainWindow, Ui_MainWindow):
         notaCliente = diretorio + '\\notaCliente.pdf'
         
         cnv = canvas.Canvas(notaCliente)
-        pdfmetrics.registerFont(TTFont('Vera', 'Vera.ttf'))
-        cnv.setFont('Vera', 9)
+        cnv.setFontSize(9)
         cnv.scale(0.9, 0.65)
         
         cnv.drawString(0, 1285, f'RÁPIDO DOS CALÇADOS            Cliente')
@@ -266,7 +265,7 @@ class Interface(QMainWindow, Ui_MainWindow):
         cnv.drawString(0, 1240, f'Telef.: (00) 0000-0000')
         cnv.drawString(0, 1225, f'Horário: de Seg. a Sex. das 8:00 as 18:00')
         cnv.drawString(0, 1210, f'____________________________________________')
-        cnv.drawString(0, 1195, f'{resultado[4]} {resultado[7]}')
+        cnv.drawString(0, 1195, f'{resultado[10]} {resultado[12]}')
         cnv.drawString(0, 1180, f'____________________________________________')
         cnv.drawString(0, 1165, f'O.S: {resultado[0]}')
         cnv.drawString(0, 1150, f'{resultado[5]}   Prazo: {resultado[8]}')
@@ -276,7 +275,7 @@ class Interface(QMainWindow, Ui_MainWindow):
         cnv.drawString(0, 1090, f'It Objeto    Cor: {resultado[2]}')
         cnv.drawString(0, 1075, f'Serviço: {resultado[3]}')
         cnv.drawString(0, 1060, f'____________________________________________')
-        cnv.drawString(0, 1045, f'{resultado[12]} {resultado[1]} {resultado[2]}')
+        cnv.drawString(0, 1045, f'{resultado[4]} {resultado[1]} {resultado[2]}')
         contador = 0
         y = 1030
         for servico in servicos:
@@ -309,8 +308,7 @@ class Interface(QMainWindow, Ui_MainWindow):
         cnv.save()
 
         cnvloja = canvas.Canvas(notaLoja)
-        pdfmetrics.registerFont(TTFont('Vera', 'Vera.ttf'))
-        cnvloja.setFont('Vera', 9)
+        cnvloja.setFontSize(9)
         cnvloja.scale(0.9, 0.65)
         
         cnvloja.drawString(0, 1285, f'RÁPIDO DOS CALÇADOS            Balcão')
@@ -319,17 +317,17 @@ class Interface(QMainWindow, Ui_MainWindow):
         cnvloja.drawString(0, 1240, f'Telef.: (00) 0000-0000')
         cnvloja.drawString(0, 1225, f'Horário: de Seg. a Sex. das 8:00 as 18:00')
         cnvloja.drawString(0, 1210, f'____________________________________________')
-        cnvloja.drawString(0, 1195, f'{resultado[4]} {resultado[7]}')
+        cnvloja.drawString(0, 1195, f'{resultado[10]} {resultado[12]}')
         cnvloja.drawString(0, 1180, f'____________________________________________')
         cnvloja.drawString(0, 1165, f'O.S: {resultado[0]}')
-        cnvloja.drawString(0, 1150, f'{resultado[5]}   Prazo: {resultado[8]}')
+        cnvloja.drawString(0, 1150, f'{resultado[6]}   Prazo: {resultado[5]}')
         cnvloja.drawString(0, 1135, f'____________________________________________')
         cnvloja.drawString(0, 1120, f'Impresso por: {funcionario}')
         cnvloja.drawString(0, 1105, f'____________________________________________')
         cnvloja.drawString(0, 1090, f'It Objeto    Cor: {resultado[2]}')
         cnvloja.drawString(0, 1075, f'Serviço: {resultado[3]}')
         cnvloja.drawString(0, 1060, f'____________________________________________')
-        cnvloja.drawString(0, 1045, f'{resultado[1]} {resultado[2]}')
+        cnvloja.drawString(0, 1045, f'{resultado[4]} {resultado[1]} {resultado[2]}')
         contador = 0
         y = 1030
         for servico in servicos:
@@ -383,11 +381,6 @@ class Interface(QMainWindow, Ui_MainWindow):
         produtos.mostrar_produtos()
         resultados = produtos.resultados
 
-        arquivo = fr'C:\Users\{self.username}\Desktop\relatorio_Produtos.txt'
-        if os.path.isfile(arquivo):
-            pass
-        else:
-            arquivo = fr'C:\Users\{self.username}\OneDrive\Área de Trabalho\relatorio_Produtos.txt'
         font=QtGui.QFont() 
         font.setPointSize(12) 
         for resultado in resultados:
@@ -448,12 +441,6 @@ class Interface(QMainWindow, Ui_MainWindow):
         clientes.mostrar_clientes()
         resultados = clientes.resultados
 
-        arquivo = fr'C:\Users\{self.username}\Desktop\relatorio_Clientes.txt'
-        if os.path.isfile(arquivo):
-            pass
-        else:
-            arquivo = fr'C:\Users\{self.username}\OneDrive\Área de Trabalho\relatorio_Clientes.txt'
-
         font=QtGui.QFont() 
         font.setPointSize(12) 
         for resultado in resultados:
@@ -493,8 +480,6 @@ class Interface(QMainWindow, Ui_MainWindow):
             f'{resultado[11]}'])
                 for i, _ in enumerate(resultado):
                     child.setFont(i , font)
-        # else:
-            # self.labelClienteProduto.setText('Nada encontrado')
     def mostrar_cliente(self):
         self.labelClienteProduto.clear()
         self.labelClienteProduto.headerItem().setText(0, "ID")
@@ -578,6 +563,11 @@ class Interface(QMainWindow, Ui_MainWindow):
         return 
     
     def create_file_excel(self, lista_dados, tabela):
+        arquivo = fr'C:\Users\{self.username}\Desktop'
+        if os.path.exists(arquivo):
+            pass
+        else:
+            arquivo = fr'C:\Users\{self.username}\OneDrive\Área de Trabalho'
         if tabela == 'Clientes':
             Nome = []
             Telefone = []
@@ -589,7 +579,8 @@ class Interface(QMainWindow, Ui_MainWindow):
             dict_dados = {
             "ID": ID_cliente, "Nome": Nome, "Telefone": Telefone}
             dados = pd.DataFrame(data=dict_dados)
-            dados.to_excel('Clientes.xls')
+            arquivo = arquivo + '\Clientes.xls'
+            dados.to_excel(arquivo)
             return
         else:
             id_produto = []
@@ -629,7 +620,8 @@ class Interface(QMainWindow, Ui_MainWindow):
         
 
             dados = pd.DataFrame(data=dict_dados)
-            dados.to_excel('produtos.xls')
+            arquivo = arquivo + '\produtos.xls'
+            dados.to_excel(arquivo)
             return
         # try:
         #     dados.to_excel('produtos.xls')
