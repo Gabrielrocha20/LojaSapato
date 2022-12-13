@@ -4,7 +4,10 @@ import sys
 from datetime import datetime
 from hashlib import md5
 from os import getenv
+from random import choice, randint
 from unittest import result
+
+from faker import Faker
 
 
 class CrudLoja:
@@ -239,24 +242,12 @@ class CrudLoja:
             sql = f'SELECT * FROM Cliente WHERE Telefone = "{self.telefone}"'
             cursor.execute(sql)
             results = cursor.fetchall()
-            resultados = []
-            for i in results:
-                resultados.append(i)
-            self.resultados = resultados
+            self.resultados = results
             return
         sql = 'SELECT * FROM Cliente'
         cursor.execute(sql)
         results = cursor.fetchall()
-        resultados = []
-        for i in results:
-            resultados.append(i)
-        self.resultados = resultados
-        diretorio = fr'C:\Users\{self.username}\Desktop'
-        if os.path.exists(diretorio):
-            pass
-        else:
-            diretorio = fr'C:\Users\{self.username}\OneDrive\Área de Trabalho'
-        diretorio = diretorio + '\\relatorio_Clientes.txt'
+        self.resultados = results
 
     def mostrar_produtos(self):
         cursor = self.con.cursor()
@@ -264,44 +255,35 @@ class CrudLoja:
             sql = f'SELECT * FROM Produto WHERE Telefone = "{self.telefone}"'
             cursor.execute(sql)
             results = cursor.fetchall()
-            resultados = []
-            for i in results:
-                resultados.append(i)
-            self.resultados = resultados
+            self.resultados = results
             return
         elif self.produtos == 'os':
             sql = f'SELECT * FROM Produto WHERE ID = {self.o_s}'
             cursor.execute(sql)
             results = cursor.fetchall()
-            resultados = []
-            for i in results:
-                resultados.append(i)
-            self.resultados = resultados
+            self.resultados = results
             return
         elif self.produtos == 'filtro':
             sql = f"""SELECT * FROM Produto WHERE
-            ID LIKE '%{self.filtro}%' OR
-            Produto LIKE '%{self.filtro}%' OR
-            Cor LIKE '%{self.filtro}%' OR
-            Serviço LIKE '%{self.filtro}%' OR
-            Hora_entrada LIKE '%{self.filtro}%' OR
-            Hora_saida LIKE '%{self.filtro}%' OR
-            Data_Prazo LIKE '%{self.filtro}%' OR
-            Par_pe LIKE '%{self.filtro}%'"""
+            ID LIKE '{self.filtro}' OR
+            Produto LIKE '{self.filtro}' OR
+            Cor LIKE '{self.filtro}' OR
+            Cliente LIKE '%{self.filtro}%' OR
+            Serviço LIKE '{self.filtro}' OR
+            Hora_entrada LIKE '{self.filtro}' OR
+            Hora_saida LIKE '{self.filtro}' OR
+            Data_Prazo LIKE '{self.filtro}' OR
+            Par_pe LIKE '{self.filtro}'"""
             cursor.execute(sql)
             results = cursor.fetchall()
-            resultados = []
-            for i in results:
-                resultados.append(i)
-            self.resultados = resultados
+            self.resultados = results
             return
-        sql = 'SELECT * FROM Produto'
-        cursor.execute(sql)
-        results = cursor.fetchall()
-        resultados = []
-        for i in results:
-            resultados.append(i)
-        self.resultados = resultados
+        else:
+            sql = 'SELECT * FROM Produto'
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            self.resultados = results
+            return
 
     def create_cliente(self):
         cursor = self.con.cursor()
@@ -381,23 +363,25 @@ class CrudLoja:
         cursor.execute(sql)
         self.con.commit()
 
-    
+# if __name__ == '__main__':
+#     for i in range(1000):
+#         fake = Faker()
+#         nome = f"{fake.name()} {i}"
+#         telefone = randint(10000000000, 99999999999)
+#         data = datetime.now()
+#         data_formatada = datetime.strftime(data, "%d/%m/%Y %H:%M")
 
-    # def delete(self):
-    #     self.read_vagas()
-    #     cursor = self.con.cursor()
-    #     placa = self.placa
-    #     sql = f'DELETE FROM vagas WHERE Placa = "{placa}"'
-
-    #     cursor.execute(sql)
-
-    #     data = datetime.now()
-    #     data_formatada = datetime.strftime(data, "%d/%m/%Y %H:%M:%S")
-
-    #     sql_data = f'UPDATE registros_de_vagas SET Data_saida = "{data_formatada}" ' \
-    #                f'WHERE Placa = "{placa}"'
-    #     cursor.execute(sql_data)
-    #     self.con.commit()
-    #     self.verifica = True
-    #     self.vagas -= 1
-    
+#         produto = 'Tenis'
+#         preco = i + 20
+#         sinal = preco / 2
+#         cor = 'preto'
+#         servico = 'Colar'
+#         prazo = '22/12/2022 09:00'
+#         funcionario = 'Gabriel Rocha'
+        
+#         crud = CrudLoja(nome=nome, telefone=str(telefone), servico=servico, cor=cor,
+#                 produto=produto, preco=preco, prazo=prazo, par_pe='Par', filtro=None,
+#                 produtos=None, sinal=sinal, clientes=None, o_s=None, funcionario=funcionario,
+#                 login=None, senha=None, adm=None)
+#         crud.create_cliente()
+#         crud.create_produto()
