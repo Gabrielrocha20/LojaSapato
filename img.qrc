@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="img">
+    <file>sapateiro.ico</file>
+  </qresource>
+</RCC>

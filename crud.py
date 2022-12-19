@@ -12,9 +12,9 @@ from faker import Faker
 
 class CrudLoja:
     def __init__(self, nome=None, telefone=None, servico=None, cor=None,
-                produto=None, preco=None, prazo=None, par_pe=None, filtro=None,
-                produtos=None, sinal=None, clientes=None, o_s=None, funcionario=None,
-                login=None, senha=None, adm=None):
+                 produto=None, preco=None, prazo=None, par_pe=None, filtro=None,
+                 produtos=None, sinal=None, clientes=None, o_s=None, status=None, funcionario=None,
+                 login=None, senha=None, adm=None):
 
         self.produto = produto
         self.prazo = prazo
@@ -30,6 +30,7 @@ class CrudLoja:
         self.sinal = sinal
         self.funcionario = funcionario
         self.adm = adm
+        self.status = status
 
         # filtros
         self.filtro = filtro
@@ -43,7 +44,7 @@ class CrudLoja:
         self.resultados = None
 
         self.username = getenv("USERNAME")
-        
+
         self.con = sqlite3.connect('dados.db')
         self.cursor = self.con.cursor()
         try:
@@ -80,6 +81,7 @@ class CrudLoja:
                 "Cliente"	TEXT,
                 "Funcionario"	TEXT,
                 "Telefone"	TEXT,
+                "Status"	TEXT,
                 PRIMARY KEY("ID" AUTOINCREMENT)
             )
                 """
@@ -130,7 +132,7 @@ class CrudLoja:
             )
                 """
             )
-    
+
     def cadastrar_conta(self):
         cursor = self.con.cursor()
 
@@ -149,6 +151,7 @@ class CrudLoja:
             self.cliente = False
 
         self.con.commit()
+
     def cadastrar_funcionario(self):
         cursor = self.con.cursor()
 
@@ -167,7 +170,7 @@ class CrudLoja:
             self.cliente = 'Funcionario Cadastrado'
         else:
             self.cliente = 'Funcionario Ja cadastrado'
-        
+
         checar_funcionario = f'SELECT * FROM Funcionario WHERE Telefone = "{self.telefone}"'
         cursor.execute(checar_funcionario)
         checar_funcionario = cursor.fetchall()
@@ -176,6 +179,7 @@ class CrudLoja:
             cadastro = f'INSERT INTO Horarios_acesso (ID_Funcionario, Hora_acesso) VALUES ("{id_funcionario}", "{data_formatada}")'
             cursor.execute(cadastro)
         self.con.commit()
+
     def read_funcionario(self):
         if self.funcionario:
             senha = self.senha.encode("utf8")
@@ -195,7 +199,7 @@ class CrudLoja:
             identificador = checar_funcionario[0][0]
             data = datetime.now()
             data_formatada = datetime.strftime(data, "%d/%m/%Y %H:%M")
-            
+
             sql = f'UPDATE Funcionario SET Hora_entrada = "{data_formatada}" WHERE ID = {identificador}'
             up_hora = f'INSERT INTO Horarios_acesso (ID_Funcionario, Hora_acesso) VALUES ("{identificador}", "{data_formatada}")'
             cursor.execute(up_hora)
@@ -218,7 +222,6 @@ class CrudLoja:
             self.con.commit()
             return
 
-    
     def update_saida_funcionario(self):
         cursor = self.con.cursor()
         o_s = self.o_s
@@ -234,7 +237,6 @@ class CrudLoja:
         sql = f'UPDATE Funcionario SET Hora_saida = "{data_formatada}" WHERE ID = {identificador}'
         cursor.execute(sql)
         self.con.commit()
-
 
     def mostrar_clientes(self):
         cursor = self.con.cursor()
@@ -273,7 +275,9 @@ class CrudLoja:
             Hora_entrada LIKE '{self.filtro}' OR
             Hora_saida LIKE '{self.filtro}' OR
             Data_Prazo LIKE '{self.filtro}' OR
-            Par_pe LIKE '{self.filtro}'"""
+            Par_pe LIKE '{self.filtro}'OR
+            Status LIKE '{self.filtro}
+            """
             cursor.execute(sql)
             results = cursor.fetchall()
             self.resultados = results
@@ -305,7 +309,7 @@ class CrudLoja:
             self.cliente = 'Cliente Ja cadastrado'
 
         self.con.commit()
-    
+
     def create_produto(self):
         cursor = self.con.cursor()
 
@@ -318,6 +322,7 @@ class CrudLoja:
         sinal = self.sinal
         funcionario = self.funcionario
         par_pe = self.par_pe
+        status = self.status
 
         data = datetime.now()
         data_formatada = datetime.strftime(data, "%d/%m/%Y %H:%M")
@@ -333,20 +338,18 @@ class CrudLoja:
         cursor.execute(checar_produto)
         checar_produto = cursor.fetchall()
 
-        if (len(produto) == 0) or (len(telefone) == 0) or (len(cor) == 0) or (len(servico) == 0) or (len(prazo) == 0) or (len(par_pe) == 0):
+        if (len(produto) == 0) or (len(telefone) == 0) or (len(cor) == 0) or (len(servico) == 0) or (len(prazo) == 0) or (len(par_pe) == 0) or (len(status)) == 0:
             return
         elif len(checar_cliente) == 0:
             self.cliente = 'Cliente Não existe ou Telefone invalido'
-            
+
         else:
-            cadastro = f'INSERT INTO Produto (Produto, Cor, Serviço, Cliente, Hora_entrada, Hora_saida, Telefone, Data_Prazo, Preço, Funcionario, Sinal, Par_pe) VALUES ("{produto}",\
-            "{cor}", "{servico}","{nome}", "{data_formatada}", "{0}", "{telefone}", "{prazo}", "{preco}", "{funcionario}", "{sinal}", "{par_pe}")'
+            cadastro = f'INSERT INTO Produto (Produto, Cor, Serviço, Cliente, Hora_entrada, Hora_saida, Telefone, Data_Prazo, Preço, Funcionario, Sinal, Par_pe, Status) VALUES ("{produto}",\
+            "{cor}", "{servico}","{nome}", "{data_formatada}", "{0}", "{telefone}", "{prazo}", "{preco}", "{funcionario}", "{sinal}", "{par_pe}", "{status}")'
             cursor.execute(cadastro)
             self.cliente = 'Produto registrado'
-        
 
         self.con.commit()
-
 
     def update(self):
         cursor = self.con.cursor()
@@ -360,6 +363,21 @@ class CrudLoja:
         data = datetime.now()
         data_formatada = datetime.strftime(data, "%d/%m/%Y %H:%M")
         sql = f'UPDATE Produto SET Hora_saida = "{data_formatada}" WHERE ID = {o_s} '
+        cursor.execute(sql)
+        self.con.commit()
+
+    def update_status(self):
+        cursor = self.con.cursor()
+        o_s = self.o_s
+        status = self.status
+        checar_cliente = f'SELECT * FROM Produto WHERE ID = {o_s}'
+        cursor.execute(checar_cliente)
+        checar_cliente = cursor.fetchall()
+        if len(checar_cliente) < 1:
+            self.check_os = False
+            return
+
+        sql = f'UPDATE Produto SET Status = "{status}" WHERE ID = {o_s} '
         cursor.execute(sql)
         self.con.commit()
 
@@ -378,7 +396,7 @@ class CrudLoja:
 #         servico = 'Colar'
 #         prazo = '22/12/2022 09:00'
 #         funcionario = 'Gabriel Rocha'
-        
+
 #         crud = CrudLoja(nome=nome, telefone=str(telefone), servico=servico, cor=cor,
 #                 produto=produto, preco=preco, prazo=prazo, par_pe='Par', filtro=None,
 #                 produtos=None, sinal=sinal, clientes=None, o_s=None, funcionario=funcionario,

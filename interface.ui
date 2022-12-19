@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1058</width>
-    <height>778</height>
+    <height>717</height>
    </rect>
   </property>
   <property name="font">
@@ -17,6 +17,16 @@
   </property>
   <property name="windowTitle">
    <string>Rapido Dos Calçados</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="img.qrc">
+    <normaloff>:/img/sapateiro.ico</normaloff>:/img/sapateiro.ico</iconset>
+  </property>
+  <property name="iconSize">
+   <size>
+    <width>16</width>
+    <height>16</height>
+   </size>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
@@ -625,6 +635,18 @@ border-radius:10px
                       </font>
                      </property>
                     </column>
+                    <column>
+                     <property name="text">
+                      <string>Status</string>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                       <weight>50</weight>
+                       <bold>false</bold>
+                      </font>
+                     </property>
+                    </column>
                    </widget>
                   </item>
                  </layout>
@@ -1161,8 +1183,8 @@ border-radius:10px
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>882</width>
-                       <height>709</height>
+                       <width>81</width>
+                       <height>452</height>
                       </rect>
                      </property>
                      <layout class="QGridLayout" name="gridLayout_14">
@@ -1188,6 +1210,11 @@ border-radius:10px
 background-color: rgb(226, 226, 226);
 border-radius:10px</string>
                         </property>
+                        <column>
+                         <property name="text">
+                          <string notr="true">1</string>
+                         </property>
+                        </column>
                        </widget>
                       </item>
                       <item row="0" column="1">
@@ -1528,8 +1555,8 @@ border-radius:10px
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>882</width>
-                       <height>666</height>
+                       <width>81</width>
+                       <height>69</height>
                       </rect>
                      </property>
                      <layout class="QGridLayout" name="gridLayout_17">
@@ -1719,6 +1746,404 @@ background-color: rgb(29, 196, 196);
                </item>
               </layout>
              </widget>
+             <widget class="QWidget" name="Atualizarpage">
+              <layout class="QGridLayout" name="gridLayout_33">
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <item row="0" column="0">
+                <widget class="QFrame" name="frame_29">
+                 <property name="frameShape">
+                  <enum>QFrame::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Raised</enum>
+                 </property>
+                 <layout class="QGridLayout" name="gridLayout_32">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <item row="0" column="0">
+                   <widget class="QTreeWidget" name="LabelAtualizar">
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(226, 226, 226);
+border-radius:10px</string>
+                    </property>
+                    <column>
+                     <property name="text">
+                      <string>O.S</string>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Produto</string>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Cor</string>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Serviço</string>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Par_pe</string>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Data Prazo</string>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Hora Entrada</string>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Hora Saida</string>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Preço</string>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Sinal</string>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Nome</string>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Funcionario</string>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Status</string>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                    </column>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QFrame" name="frame_28">
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>150</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLineEdit {
+background-color: rgb(255, 255, 255);
+border-radius: 5px;
+font: 75 11pt &quot;MS Shell Dlg 2&quot;;
+}
+
+QLabel {
+color: rgb(0, 0, 0);
+	font: 75 14pt &quot;MS Shell Dlg 2&quot;;
+}</string>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Raised</enum>
+                 </property>
+                 <layout class="QGridLayout" name="gridLayout_31">
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="label_17">
+                    <property name="maximumSize">
+                     <size>
+                      <width>50</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <family>MS Shell Dlg 2</family>
+                      <pointsize>14</pointsize>
+                      <weight>9</weight>
+                      <italic>false</italic>
+                      <bold>false</bold>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>O.S:</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="3">
+                   <widget class="QPushButton" name="btnPesquisarAtualizar">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>25</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>300</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <pointsize>10</pointsize>
+                      <weight>75</weight>
+                      <bold>true</bold>
+                     </font>
+                    </property>
+                    <property name="cursor">
+                     <cursorShape>PointingHandCursor</cursorShape>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QPushButton {
+background-color: rgba(29, 196, 196, 0.5);
+border-radius: 10px;
+}
+
+QPushButton:hover {
+background-color: rgb(29, 196, 196);
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>Pesquisar</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="2">
+                   <widget class="QLineEdit" name="inputAtualizar">
+                    <property name="minimumSize">
+                     <size>
+                      <width>400</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>400</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="layoutDirection">
+                     <enum>Qt::LeftToRight</enum>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                    </property>
+                    <property name="placeholderText">
+                     <string>123</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="2">
+                   <widget class="QPushButton" name="btnAtualizar">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>25</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>51515</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <pointsize>10</pointsize>
+                      <weight>75</weight>
+                      <bold>true</bold>
+                     </font>
+                    </property>
+                    <property name="cursor">
+                     <cursorShape>PointingHandCursor</cursorShape>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QPushButton {
+background-color: rgba(223, 0, 54, 0.5);
+border-radius: 10px;
+}
+
+QPushButton:hover {
+background-color: rgb(223, 0, 54);
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>Atualizar</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QLabel" name="label_18">
+                    <property name="text">
+                     <string>Status:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="2">
+                   <widget class="QFrame" name="frame_30">
+                    <property name="styleSheet">
+                     <string notr="true">QRadioButton {
+font: 75 8pt &quot;MS Shell Dlg 2&quot;;
+	background-color: rgba(105, 105, 156, 0.5);
+border-radius:3px
+}</string>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Raised</enum>
+                    </property>
+                    <layout class="QHBoxLayout" name="horizontalLayout">
+                     <item>
+                      <widget class="QRadioButton" name="radioPronto">
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>Pronto</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QRadioButton" name="radioAtrasado">
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>Atrasado</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QRadioButton" name="radioAguardando">
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>Aguardando Material</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </widget>
              <widget class="QWidget" name="FinalizarPage">
               <layout class="QVBoxLayout" name="verticalLayout_3">
                <property name="spacing">
@@ -1867,6 +2292,16 @@ border-radius:10px</string>
                     <column>
                      <property name="text">
                       <string>Funcionario</string>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Status</string>
                      </property>
                      <property name="font">
                       <font>
@@ -2144,7 +2579,7 @@ background-color: rgb(150, 158, 231);
                 </property>
                </widget>
               </item>
-              <item row="4" column="0">
+              <item row="5" column="0">
                <widget class="QPushButton" name="FinalizarProdutoBtnPag">
                 <property name="minimumSize">
                  <size>
@@ -2164,29 +2599,6 @@ background-color: rgb(150, 158, 231);
                 </property>
                 <property name="text">
                  <string>Finalizar</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QPushButton" name="ClientesProdutosBtnPag">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>25</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                  <weight>75</weight>
-                  <bold>true</bold>
-                 </font>
-                </property>
-                <property name="cursor">
-                 <cursorShape>PointingHandCursor</cursorShape>
-                </property>
-                <property name="text">
-                 <string>Clientes/Produtos</string>
                 </property>
                </widget>
               </item>
@@ -2233,6 +2645,49 @@ background-color: rgb(150, 158, 231);
                 </property>
                 <property name="text">
                  <string>Cadastrar Produto</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QPushButton" name="ClientesProdutosBtnPag">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string>Clientes/Produtos</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0">
+               <widget class="QPushButton" name="AtualizarProdutoBtnPag">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>25</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Atualizar</string>
                 </property>
                </widget>
               </item>
@@ -2980,6 +3435,8 @@ font: 15 8pt &quot;Segoe UI Semibold&quot;;</string>
    </layout>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="img.qrc"/>
+ </resources>
  <connections/>
 </ui>
