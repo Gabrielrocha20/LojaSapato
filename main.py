@@ -53,7 +53,7 @@ class DialogBox(QDialog, Ui_Dialog):
                 return
             self.labelCheck.setStyleSheet('color: rgb(255, 0, 0)')
             self.labelCheck.setText('Login Invalido')
-        except TypeError as e:
+        except:
             pass
 
 
@@ -131,7 +131,7 @@ class Interface(QMainWindow, Ui_MainWindow):
             self.animation.setEndValue(newWidth)
             self.animation.setEasingCurve(QtCore.QEasingCurve.InOutQuart)
             self.animation.start()
-        except TypeError as e:
+        except:
             pass
 
     def logar_usuario(self):
@@ -155,7 +155,7 @@ class Interface(QMainWindow, Ui_MainWindow):
                         QtGui.QCursor(QtCore.Qt.PointingHandCursor))
                 return self.PaginaCentral.setCurrentWidget(self.pageHome)
             self.labelLoginMensageBox.setText('Usuario ou Senha invalidos')
-        except TypeError as e:
+        except:
             pass
 
     def cadastrar_usuario(self):
@@ -187,7 +187,7 @@ class Interface(QMainWindow, Ui_MainWindow):
             cadastrar.cadastrar_funcionario()
             self.labelNomeFuncionario.setText(self.login)
             return self.PaginaCentral.setCurrentWidget(self.pageHome)
-        except TypeError as e:
+        except:
             pass
 
     def logout(self):
@@ -200,7 +200,7 @@ class Interface(QMainWindow, Ui_MainWindow):
             self.btnFuncionarioCadastrar.setCursor(
                 QtGui.QCursor(QtCore.Qt.PointingHandCursor))
             return self.PaginaCentral.setCurrentWidget(self.pageLogin)
-        except TypeError as e:
+        except:
             pass
 
     def checarloginParaImprimir(self):
@@ -225,7 +225,7 @@ class Interface(QMainWindow, Ui_MainWindow):
                                     f'{resultado[2]}', f'{resultado[0]}', f'{resultado[1]}'])
             for i, _ in enumerate(resultado):
                 child.setFont(i, font)
-        except TypeError as e:
+        except:
             pass
 
     def cadastrar_produto(self):
@@ -241,7 +241,7 @@ class Interface(QMainWindow, Ui_MainWindow):
 
             funcionario = self.dialogo.inputImprimirLogin.text()
             servico_cliente = self.InputServico.text()
-            produto_cliente = self.InputProduto.text()
+            produto_cliente = self.InputProduto.text().capitalize()
             telefone_cliente = self.InputTelefoneProduto.text()
             preco_cliente = self.InputPreco.text()
             sinal = self.InputSinal.text()
@@ -251,6 +251,10 @@ class Interface(QMainWindow, Ui_MainWindow):
                       self.radioRosa, self.radioVerde, self.radioAmarelo, self.radioBege, self.radioLaranja, self.radioRoxo, self.radioBicolor,]
 
             radios_parpe = [self.radioPar, self.radioPe]
+
+            servico_cliente = servico_cliente.split('/')
+            servico_cliente = [s.capitalize() for s in servico_cliente]
+            servico_cliente = '/'.join(servico_cliente)
 
             if sinal == '':
                 sinal = 0
@@ -299,10 +303,39 @@ class Interface(QMainWindow, Ui_MainWindow):
                 f'{resultado[11]}', f'{resultado[13]}'])
             for i, _ in enumerate(resultado):
                 child.setFont(i, font)
+            self.create_pdl(pdf='notaLoja.pdf', loja_cliente='Cliente',
+                            resultado=resultado, servicos=servicos, funcionario=funcionario,
+                            sinal=sinal, preco=preco, preco_sinal=preco_sinal, preco_cliente=preco_cliente,
+                            preco_lista=preco_lista)
+            self.create_pdl(pdf='notaCliente.pdf', loja_cliente='Balcão',
+                            resultado=resultado, servicos=servicos, funcionario=funcionario,
+                            sinal=sinal, preco=preco, preco_sinal=preco_sinal, preco_cliente=preco_cliente,
+                            preco_lista=preco_lista)
+
+            self.dialogo.inputImprimirLogin.setText('')
+            self.InputServico.setText('')
+            self.InputProduto.setText('')
+            self.InputTelefoneProduto.setText('')
+            self.InputPreco.setText('')
+            self.InputSinal.setText('')
+            self.InputPrazo.setText('')
+
+            for radio in radios:
+                if radio.isChecked():
+                    radio.setChecked(False)
+            for radio_parpe in radios_parpe:
+                if radio_parpe.isChecked():
+                    radio_parpe.setChecked(False)
+
+        except:
+            pass
+
+    def create_pdl(self, pdf, loja_cliente, resultado, servicos, funcionario, sinal, preco, preco_sinal, preco_cliente, preco_lista):
+        try:
             notaLoja = 'notaLoja.pdf'
             notaCliente = 'notaCliente.pdf'
 
-            cnv = canvas.Canvas(notaCliente)
+            cnv = canvas.Canvas(pdf)
             cnv.setFontSize(15)
             cnv.scale(0.9, 0.65)
 
@@ -310,7 +343,7 @@ class Interface(QMainWindow, Ui_MainWindow):
                 0, 1275, f'         OS:          {resultado[0]}       ')
             cnv.setFontSize(10)
             cnv.drawString(
-                0, 1260, f'   Ponto do Tênis                         Cliente')
+                0, 1260, f'   Ponto do Tênis                         {loja_cliente}')
             cnv.drawString(0, 1245, f'   Rua do imperador 264 loja 19/Centro')
             cnv.drawString(0, 1230, f'   Petrópolis')
             cnv.drawString(0, 1215, f'   Telef.: (00) 0000-0000')
@@ -382,87 +415,6 @@ class Interface(QMainWindow, Ui_MainWindow):
             cnv.setPageSize((300, 840))
             cnv.save()
 
-            cnvloja = canvas.Canvas(notaLoja)
-            cnvloja.setFontSize(15)
-            cnvloja.scale(0.9, 0.65)
-            cnvloja.drawString(
-                0, 1275, f'   OS:             {resultado[0]}       ')
-            cnvloja.setFontSize(10)
-            cnvloja.drawString(
-                0, 1260, f'   Ponto do Tênis                         Balcão')
-            cnvloja.drawString(
-                0, 1245, f'   Rua do imperador 264 loja 19/Centro')
-            cnvloja.drawString(0, 1230, f'   Petrópolis')
-            cnvloja.drawString(0, 1215, f'   Telef.: (00) 0000-0000')
-            cnvloja.drawString(
-                0, 1200, f'   Horário: de Seg. a Sex. das 09:00 as 19:00')
-            cnvloja.drawString(
-                0, 1185, f'____________________________________________')
-            cnvloja.drawString(0, 1170, f'   {resultado[10]} {resultado[12]}')
-            cnvloja.drawString(
-                0, 1155, f'____________________________________________')
-            cnvloja.setFontSize(12)
-            cnvloja.drawString(0, 1140, f'   O.S: {resultado[0]}')
-            cnvloja.setFontSize(10)
-            cnvloja.drawString(
-                0, 1125, f'   {resultado[6]}   Prazo: {resultado[5]}')
-            cnvloja.drawString(
-                0, 1110, f'____________________________________________')
-            cnvloja.drawString(0, 1095, f'   Impresso por: {funcionario}')
-            cnvloja.drawString(
-                0, 1080, f'____________________________________________')
-            cnvloja.drawString(0, 1065, f'   It Objeto    Cor: {resultado[2]}')
-            cnvloja.drawString(0, 1050, f'   Serviço: {resultado[3]}')
-            cnvloja.drawString(
-                0, 1035, f'____________________________________________')
-            cnvloja.drawString(
-                0, 1020, f'   {resultado[4]} {resultado[1]} {resultado[2]}')
-            contador = 0
-            y = 1005
-            for servico in servicos:
-                if len(preco_lista) > 1:
-                    cnvloja.drawString(
-                        0, y, f'                       {servico}           R${preco_lista[contador]}')
-                else:
-                    cnvloja.drawString(
-                        0, y, f'                       {servico}           R${preco_cliente}')
-                y -= 15
-                contador += 1
-            cnvloja.drawString(
-                0, y - 15, f' ___________________________________________')
-            cnvloja.drawString(
-                0, y - 30, f'                        SubTotal: R$ {preco}')
-            if sinal == 0:
-                cnvloja.drawString(
-                    0, y - 45, f'                        Sinal:    R$ 00.00')
-                cnvloja.drawString(
-                    0, y - 60, f'                        Total:    R$ {preco}')
-            else:
-                cnvloja.drawString(
-                    0, y - 45, f'                        Sinal:    R$ {sinal}')
-                cnvloja.drawString(
-                    0, y - 60, f'                        Total:    R$ {preco_sinal}')
-            cnvloja.drawString(
-                0, y - 75, f' ___________________________________________')
-            cnvloja.drawString(
-                0, y - 90, f'    Prezado cliente! Preserve este Documento')
-            cnvloja.drawString(
-                0, y - 105, f'    pois será através dele, que nossos')
-            cnvloja.drawString(
-                0, y - 120, f'    funcionarios os indentificarão os objetos')
-            cnvloja.drawString(0, y - 135, f' aqui deixados.')
-            cnvloja.drawString(
-                0, y - 150, f' ___________________________________________')
-            cnvloja.drawString(
-                0, y - 165, f'        NÃO NOS RESPONSABILIZAMOS POR')
-            cnvloja.drawString(
-                0, y - 180, f'        OBJETOS DEIXADOS POR MAIS')
-            cnvloja.drawString(0, y - 195, f'            DE 30 DIAS.')
-            cnvloja.drawString(
-                0, y - 210, f'    DATA: __/__/____     Ass.:__________________')
-            cnvloja.setPageSize((300, 840))
-            cnvloja.save()
-
             impressora = win32print.EnumPrinters(2)
             indice1 = 0
             for i in impressora:
@@ -472,12 +424,9 @@ class Interface(QMainWindow, Ui_MainWindow):
                         break
                 indice1 = + 1
             win32print.SetDefaultPrinter(impressora)
-            win32api.ShellExecute(0, "print", notaCliente,
+            win32api.ShellExecute(0, "print", pdf,
                                   None, '.', 0)
-
-            win32api.ShellExecute(0, "print", notaLoja,
-                                  None, '.', 0)
-        except TypeError as e:
+        except:
             pass
 
     def mostrar_todos_produtos(self):
@@ -512,7 +461,7 @@ class Interface(QMainWindow, Ui_MainWindow):
                 for i, _ in enumerate(resultado):
                     child.setFont(i, font)
             self.create_file_excel(lista_dados=resultados, tabela='Produtos')
-        except TypeError as e:
+        except:
             pass
 
     def filtrar(self):
@@ -547,7 +496,7 @@ class Interface(QMainWindow, Ui_MainWindow):
                     f'{resultado[11]}', f'{resultado[13]}'])
                 for i, _ in enumerate(resultado):
                     child.setFont(i, font)
-        except TypeError as e:
+        except:
             pass
 
     def mostrar_todos_clientes(self):
@@ -570,7 +519,7 @@ class Interface(QMainWindow, Ui_MainWindow):
                 for i, _ in enumerate(resultado):
                     child.setFont(i, font)
             self.create_file_excel(lista_dados=resultados, tabela='Clientes')
-        except TypeError as e:
+        except:
             pass
 
     def mostrar_produto(self):
@@ -606,7 +555,7 @@ class Interface(QMainWindow, Ui_MainWindow):
                         f'{resultado[11]}', f'{resultado[13]}'])
                     for i, _ in enumerate(resultado):
                         child.setFont(i, font)
-        except TypeError as e:
+        except:
             pass
 
     def mostrar_cliente(self):
@@ -635,7 +584,7 @@ class Interface(QMainWindow, Ui_MainWindow):
                 self.labelClientesProdutos.setColumnCount(1)
                 child = QTreeWidgetItem(
                     self.labelClienteProduto, [f'Não encontrado'])
-        except TypeError as e:
+        except:
             pass
 
     def pesquisa_finalizar(self):
@@ -666,7 +615,7 @@ class Interface(QMainWindow, Ui_MainWindow):
             child = QTreeWidgetItem(self.LabelFinalizar, [
                                     'O.S Incorreto ou nao existe'])
             return
-        except TypeError as e:
+        except:
             pass
 
     def pesquisa_atualizar(self):
@@ -697,7 +646,7 @@ class Interface(QMainWindow, Ui_MainWindow):
             child = QTreeWidgetItem(self.LabelAtualizar, [
                                     'O.S Incorreto ou nao existe'])
             return
-        except TypeError as e:
+        except:
             pass
 
     def atualizar_produto(self):
@@ -737,7 +686,7 @@ class Interface(QMainWindow, Ui_MainWindow):
                 child.setFont(i, font)
             child = QTreeWidgetItem(self.LabelAtualizar, ['Atualizado!!'])
             return
-        except TypeError as e:
+        except:
             pass
 
     def finalizar_produto(self):
@@ -771,7 +720,7 @@ class Interface(QMainWindow, Ui_MainWindow):
                 child.setFont(i, font)
             child = QTreeWidgetItem(self.LabelFinalizar, ['Finalizado!!'])
             return
-        except TypeError as e:
+        except:
             pass
 
     def create_file_excel(self, lista_dados, tabela):
@@ -830,12 +779,7 @@ class Interface(QMainWindow, Ui_MainWindow):
                 arquivo = 'produtos.xls'
                 dados.to_excel(arquivo)
                 return
-            # try:
-            #     dados.to_excel('produtos.xls')
-            # except:
-            #     os.remove('produtos.xls')
-            #     dados.to_excel('produtos.xls')
-        except TypeError as e:
+        except:
             pass
 
 

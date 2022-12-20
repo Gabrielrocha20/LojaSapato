@@ -84,7 +84,7 @@ class CrudLoja:
                 "Status"	TEXT,
                 PRIMARY KEY("ID" AUTOINCREMENT)
             )
-                """
+            """
             )
         try:
             sql_Produto = 'SELECT * FROM Funcionario'
@@ -134,252 +134,282 @@ class CrudLoja:
             )
 
     def cadastrar_conta(self):
-        cursor = self.con.cursor()
+        try:
+            cursor = self.con.cursor()
 
-        senha = self.senha.encode("utf8")
-        senha_hash = md5(senha).hexdigest()
-
-        checar_funcionario = f'SELECT * FROM Contas WHERE Login = "{self.login}"'
-        cursor.execute(checar_funcionario)
-        checar_funcionario = cursor.fetchall()
-
-        if len(checar_funcionario) == 0:
-            cadastro = f'INSERT INTO Contas (Login, Senha, Administrador) VALUES ("{self.login}", "{senha_hash}", "{self.adm}")'
-            cursor.execute(cadastro)
-            self.cliente = True
-        else:
-            self.cliente = False
-
-        self.con.commit()
-
-    def cadastrar_funcionario(self):
-        cursor = self.con.cursor()
-
-        data = datetime.now()
-        data_formatada = datetime.strftime(data, "%d/%m/%Y %H:%M")
-        senha = self.senha.encode("utf8")
-        senha_hash = md5(senha).hexdigest()
-
-        checar_funcionario = f'SELECT * FROM Funcionario WHERE Login = "{self.login}"'
-        cursor.execute(checar_funcionario)
-        checar_funcionario = cursor.fetchall()
-
-        if len(checar_funcionario) == 0:
-            cadastro = f'INSERT INTO Funcionario (Login, Senha, Telefone, Hora_entrada, Hora_saida) VALUES ("{self.login}", "{senha_hash}", "{self.telefone}", "{data_formatada}", "0")'
-            cursor.execute(cadastro)
-            self.cliente = 'Funcionario Cadastrado'
-        else:
-            self.cliente = 'Funcionario Ja cadastrado'
-
-        checar_funcionario = f'SELECT * FROM Funcionario WHERE Telefone = "{self.telefone}"'
-        cursor.execute(checar_funcionario)
-        checar_funcionario = cursor.fetchall()
-        if len(checar_funcionario) == 0:
-            id_funcionario = checar_funcionario[0][0]
-            cadastro = f'INSERT INTO Horarios_acesso (ID_Funcionario, Hora_acesso) VALUES ("{id_funcionario}", "{data_formatada}")'
-            cursor.execute(cadastro)
-        self.con.commit()
-
-    def read_funcionario(self):
-        if self.funcionario:
             senha = self.senha.encode("utf8")
             senha_hash = md5(senha).hexdigest()
+
+            checar_funcionario = f'SELECT * FROM Contas WHERE Login = "{self.login}"'
+            cursor.execute(checar_funcionario)
+            checar_funcionario = cursor.fetchall()
+
+            if len(checar_funcionario) == 0:
+                cadastro = f'INSERT INTO Contas (Login, Senha, Administrador) VALUES ("{self.login}", "{senha_hash}", "{self.adm}")'
+                cursor.execute(cadastro)
+                self.cliente = True
+            else:
+                self.cliente = False
+
+            self.con.commit()
+        except sqlite3.OperationalError as e:
+            pass
+
+    def cadastrar_funcionario(self):
+        try:
             cursor = self.con.cursor()
-            checar_funcionario = f'SELECT * FROM Funcionario WHERE Login = "{self.login}" AND Senha = "{senha_hash}"'
+
+            data = datetime.now()
+            data_formatada = datetime.strftime(data, "%d/%m/%Y %H:%M")
+            senha = self.senha.encode("utf8")
+            senha_hash = md5(senha).hexdigest()
+
+            checar_funcionario = f'SELECT * FROM Funcionario WHERE Login = "{self.login}"'
+            cursor.execute(checar_funcionario)
+            checar_funcionario = cursor.fetchall()
+
+            if len(checar_funcionario) == 0:
+                cadastro = f'INSERT INTO Funcionario (Login, Senha, Telefone, Hora_entrada, Hora_saida) VALUES ("{self.login}", "{senha_hash}", "{self.telefone}", "{data_formatada}", "0")'
+                cursor.execute(cadastro)
+                self.cliente = 'Funcionario Cadastrado'
+            else:
+                self.cliente = 'Funcionario Ja cadastrado'
+
+            checar_funcionario = f'SELECT * FROM Funcionario WHERE Telefone = "{self.telefone}"'
             cursor.execute(checar_funcionario)
             checar_funcionario = cursor.fetchall()
             if len(checar_funcionario) == 0:
-                self.resultados = []
-                return
-            resultados = []
-            for i in checar_funcionario:
-                resultados.append(i)
-            self.resultados = resultados
+                id_funcionario = checar_funcionario[0][0]
+                cadastro = f'INSERT INTO Horarios_acesso (ID_Funcionario, Hora_acesso) VALUES ("{id_funcionario}", "{data_formatada}")'
+                cursor.execute(cadastro)
+            self.con.commit()
+        except sqlite3.OperationalError as e:
+            pass
 
+    def read_funcionario(self):
+        try:
+            if self.funcionario:
+                senha = self.senha.encode("utf8")
+                senha_hash = md5(senha).hexdigest()
+                cursor = self.con.cursor()
+                checar_funcionario = f'SELECT * FROM Funcionario WHERE Login = "{self.login}" AND Senha = "{senha_hash}"'
+                cursor.execute(checar_funcionario)
+                checar_funcionario = cursor.fetchall()
+                if len(checar_funcionario) == 0:
+                    self.resultados = []
+                    return
+                resultados = []
+                for i in checar_funcionario:
+                    resultados.append(i)
+                self.resultados = resultados
+
+                identificador = checar_funcionario[0][0]
+                data = datetime.now()
+                data_formatada = datetime.strftime(data, "%d/%m/%Y %H:%M")
+
+                sql = f'UPDATE Funcionario SET Hora_entrada = "{data_formatada}" WHERE ID = {identificador}'
+                up_hora = f'INSERT INTO Horarios_acesso (ID_Funcionario, Hora_acesso) VALUES ("{identificador}", "{data_formatada}")'
+                cursor.execute(up_hora)
+                self.con.commit()
+                return
+            else:
+                senha = self.senha.encode("utf8")
+                senha_hash = md5(senha).hexdigest()
+                cursor = self.con.cursor()
+                checar_funcionario = f'SELECT * FROM Contas WHERE Login = "{self.login}" AND Senha = "{senha_hash}"'
+                cursor.execute(checar_funcionario)
+                checar_funcionario = cursor.fetchall()
+                if len(checar_funcionario) == 0:
+                    self.resultados = []
+                    return
+                resultados = []
+                for i in checar_funcionario:
+                    resultados.append(i)
+                self.resultados = resultados
+                self.con.commit()
+                return
+        except sqlite3.OperationalError as e:
+            pass
+
+    def update_saida_funcionario(self):
+        try:
+            cursor = self.con.cursor()
+            o_s = self.o_s
+            checar_funcionario = f'SELECT * FROM Funcionario WHERE Login = "{self.login}" AND Senha = "{self.senha}"'
+            cursor.execute(checar_funcionario)
+            checar_funcionario = cursor.fetchall()
+            if len(checar_funcionario) < 1:
+                self.check_os = False
+                return
             identificador = checar_funcionario[0][0]
             data = datetime.now()
             data_formatada = datetime.strftime(data, "%d/%m/%Y %H:%M")
-
-            sql = f'UPDATE Funcionario SET Hora_entrada = "{data_formatada}" WHERE ID = {identificador}'
-            up_hora = f'INSERT INTO Horarios_acesso (ID_Funcionario, Hora_acesso) VALUES ("{identificador}", "{data_formatada}")'
-            cursor.execute(up_hora)
+            sql = f'UPDATE Funcionario SET Hora_saida = "{data_formatada}" WHERE ID = {identificador}'
+            cursor.execute(sql)
             self.con.commit()
-            return
-        else:
-            senha = self.senha.encode("utf8")
-            senha_hash = md5(senha).hexdigest()
-            cursor = self.con.cursor()
-            checar_funcionario = f'SELECT * FROM Contas WHERE Login = "{self.login}" AND Senha = "{senha_hash}"'
-            cursor.execute(checar_funcionario)
-            checar_funcionario = cursor.fetchall()
-            if len(checar_funcionario) == 0:
-                self.resultados = []
-                return
-            resultados = []
-            for i in checar_funcionario:
-                resultados.append(i)
-            self.resultados = resultados
-            self.con.commit()
-            return
-
-    def update_saida_funcionario(self):
-        cursor = self.con.cursor()
-        o_s = self.o_s
-        checar_funcionario = f'SELECT * FROM Funcionario WHERE Login = "{self.login}" AND Senha = "{self.senha}"'
-        cursor.execute(checar_funcionario)
-        checar_funcionario = cursor.fetchall()
-        if len(checar_funcionario) < 1:
-            self.check_os = False
-            return
-        identificador = checar_funcionario[0][0]
-        data = datetime.now()
-        data_formatada = datetime.strftime(data, "%d/%m/%Y %H:%M")
-        sql = f'UPDATE Funcionario SET Hora_saida = "{data_formatada}" WHERE ID = {identificador}'
-        cursor.execute(sql)
-        self.con.commit()
+        except sqlite3.OperationalError as e:
+            pass
 
     def mostrar_clientes(self):
-        cursor = self.con.cursor()
-        if self.clientes == '1':
-            sql = f'SELECT * FROM Cliente WHERE Telefone = "{self.telefone}"'
+        try:
+            cursor = self.con.cursor()
+            if self.clientes == '1':
+                sql = f'SELECT * FROM Cliente WHERE Telefone = "{self.telefone}"'
+                cursor.execute(sql)
+                results = cursor.fetchall()
+                self.resultados = results
+                return
+            sql = 'SELECT * FROM Cliente'
             cursor.execute(sql)
             results = cursor.fetchall()
             self.resultados = results
-            return
-        sql = 'SELECT * FROM Cliente'
-        cursor.execute(sql)
-        results = cursor.fetchall()
-        self.resultados = results
+        except sqlite3.OperationalError as e:
+            pass
 
     def mostrar_produtos(self):
-        cursor = self.con.cursor()
-        if self.produtos == '1':
-            sql = f'SELECT * FROM Produto WHERE Telefone = "{self.telefone}"'
-            cursor.execute(sql)
-            results = cursor.fetchall()
-            self.resultados = results
-            return
-        elif self.produtos == 'os':
-            sql = f'SELECT * FROM Produto WHERE ID = {self.o_s}'
-            cursor.execute(sql)
-            results = cursor.fetchall()
-            self.resultados = results
-            return
-        elif self.produtos == 'filtro':
-            sql = f"""SELECT * FROM Produto WHERE
-            ID LIKE '{self.filtro}' OR
-            Produto LIKE '{self.filtro}' OR
-            Cor LIKE '{self.filtro}' OR
-            Cliente LIKE '%{self.filtro}%' OR
-            Serviço LIKE '{self.filtro}' OR
-            Hora_entrada LIKE '{self.filtro}' OR
-            Hora_saida LIKE '{self.filtro}' OR
-            Data_Prazo LIKE '{self.filtro}' OR
-            Par_pe LIKE '{self.filtro}'OR
-            Status LIKE '{self.filtro}
-            """
-            cursor.execute(sql)
-            results = cursor.fetchall()
-            self.resultados = results
-            return
-        else:
-            sql = 'SELECT * FROM Produto'
-            cursor.execute(sql)
-            results = cursor.fetchall()
-            self.resultados = results
-            return
+        try:
+            cursor = self.con.cursor()
+            if self.produtos == '1':
+                sql = f'SELECT * FROM Produto WHERE Telefone = "{self.telefone}"'
+                cursor.execute(sql)
+                results = cursor.fetchall()
+                self.resultados = results
+                return
+            elif self.produtos == 'os':
+                sql = f'SELECT * FROM Produto WHERE ID = {self.o_s}'
+                cursor.execute(sql)
+                results = cursor.fetchall()
+                self.resultados = results
+                return
+            elif self.produtos == 'filtro':
+                sql = f"""SELECT * FROM Produto WHERE
+                ID LIKE '{self.filtro}' OR
+                Produto LIKE '{self.filtro}' OR
+                Cor LIKE '{self.filtro}' OR
+                Cliente LIKE '%{self.filtro}%' OR
+                Serviço LIKE '{self.filtro}' OR
+                Hora_entrada LIKE '{self.filtro}' OR
+                Hora_saida LIKE '{self.filtro}' OR
+                Data_Prazo LIKE '{self.filtro}' OR
+                Par_pe LIKE '{self.filtro}'OR
+                Status LIKE '{self.filtro}'
+                """
+                cursor.execute(sql)
+                results = cursor.fetchall()
+                self.resultados = results
+                return
+            else:
+                sql = 'SELECT * FROM Produto'
+                cursor.execute(sql)
+                results = cursor.fetchall()
+                self.resultados = results
+                return
+        except sqlite3.OperationalError as e:
+            pass
 
     def create_cliente(self):
-        cursor = self.con.cursor()
+        try:
+            cursor = self.con.cursor()
 
-        nome = self.nome
-        telefone = self.telefone
+            nome = self.nome
+            telefone = self.telefone
 
-        checar_cliente = f'SELECT * FROM Cliente WHERE telefone = "{telefone}"'
-        cursor.execute(checar_cliente)
-        checar_cliente = cursor.fetchall()
+            checar_cliente = f'SELECT * FROM Cliente WHERE telefone = "{telefone}"'
+            cursor.execute(checar_cliente)
+            checar_cliente = cursor.fetchall()
 
-        if (len(nome) == 0) or (len(telefone) == 0):
-            return
-        elif len(checar_cliente) == 0:
-            cadastro = f'INSERT INTO Cliente (Nome, Telefone) VALUES ("{nome}", "{telefone}")'
-            cursor.execute(cadastro)
-            self.cliente = 'Cliente Cadastrado'
-        else:
-            self.cliente = 'Cliente Ja cadastrado'
+            if (len(nome) == 0) or (len(telefone) == 0):
+                return
+            elif len(checar_cliente) == 0:
+                cadastro = f'INSERT INTO Cliente (Nome, Telefone) VALUES ("{nome}", "{telefone}")'
+                cursor.execute(cadastro)
+                self.cliente = 'Cliente Cadastrado'
+            else:
+                self.cliente = 'Cliente Ja cadastrado'
 
-        self.con.commit()
+            self.con.commit()
+        except sqlite3.OperationalError as e:
+            pass
 
     def create_produto(self):
-        cursor = self.con.cursor()
+        try:
+            cursor = self.con.cursor()
 
-        produto = self.produto
-        prazo = self.prazo
-        cor = self.cor
-        telefone = self.telefone
-        servico = self.servico
-        preco = self.preco
-        sinal = self.sinal
-        funcionario = self.funcionario
-        par_pe = self.par_pe
-        status = self.status
+            produto = self.produto
+            prazo = self.prazo
+            cor = self.cor
+            telefone = self.telefone
+            servico = self.servico
+            preco = self.preco
+            sinal = self.sinal
+            funcionario = self.funcionario
+            par_pe = self.par_pe
+            status = self.status
 
-        data = datetime.now()
-        data_formatada = datetime.strftime(data, "%d/%m/%Y %H:%M")
+            data = datetime.now()
+            data_formatada = datetime.strftime(data, "%d/%m/%Y %H:%M")
 
-        checar_cliente = f'SELECT * FROM Cliente WHERE Telefone = "{telefone}"'
-        cursor.execute(checar_cliente)
-        checar_cliente = cursor.fetchall()
+            checar_cliente = f'SELECT * FROM Cliente WHERE Telefone = "{telefone}"'
+            cursor.execute(checar_cliente)
+            checar_cliente = cursor.fetchall()
 
-        for cliente in checar_cliente:
-            nome = cliente[0]
+            for cliente in checar_cliente:
+                nome = cliente[0]
 
-        checar_produto = f'SELECT * FROM Produto WHERE Telefone = "{telefone}"'
-        cursor.execute(checar_produto)
-        checar_produto = cursor.fetchall()
+            checar_produto = f'SELECT * FROM Produto WHERE Telefone = "{telefone}"'
+            cursor.execute(checar_produto)
+            checar_produto = cursor.fetchall()
 
-        if (len(produto) == 0) or (len(telefone) == 0) or (len(cor) == 0) or (len(servico) == 0) or (len(prazo) == 0) or (len(par_pe) == 0) or (len(status)) == 0:
-            return
-        elif len(checar_cliente) == 0:
-            self.cliente = 'Cliente Não existe ou Telefone invalido'
+            if (len(produto) == 0) or (len(telefone) == 0) or (len(cor) == 0) or (len(servico) == 0) or (len(prazo) == 0) or (len(par_pe) == 0) or (len(status)) == 0:
+                return
+            elif len(checar_cliente) == 0:
+                self.cliente = 'Cliente Não existe ou Telefone invalido'
 
-        else:
-            cadastro = f'INSERT INTO Produto (Produto, Cor, Serviço, Cliente, Hora_entrada, Hora_saida, Telefone, Data_Prazo, Preço, Funcionario, Sinal, Par_pe, Status) VALUES ("{produto}",\
-            "{cor}", "{servico}","{nome}", "{data_formatada}", "{0}", "{telefone}", "{prazo}", "{preco}", "{funcionario}", "{sinal}", "{par_pe}", "{status}")'
-            cursor.execute(cadastro)
-            self.cliente = 'Produto registrado'
+            else:
+                cadastro = f'INSERT INTO Produto (Produto, Cor, Serviço, Cliente, Hora_entrada, Hora_saida, Telefone, Data_Prazo, Preço, Funcionario, Sinal, Par_pe, Status) VALUES ("{produto}",\
+                "{cor}", "{servico}","{nome}", "{data_formatada}", "{0}", "{telefone}", "{prazo}", "{preco}", "{funcionario}", "{sinal}", "{par_pe}", "{status}")'
+                cursor.execute(cadastro)
+                self.cliente = 'Produto registrado'
 
-        self.con.commit()
+            self.con.commit()
+        except sqlite3.OperationalError as e:
+            pass
 
     def update(self):
-        cursor = self.con.cursor()
-        o_s = self.o_s
-        checar_cliente = f'SELECT * FROM Produto WHERE ID = {o_s}'
-        cursor.execute(checar_cliente)
-        checar_cliente = cursor.fetchall()
-        if len(checar_cliente) < 1:
-            self.check_os = False
-            return
-        data = datetime.now()
-        data_formatada = datetime.strftime(data, "%d/%m/%Y %H:%M")
-        sql = f'UPDATE Produto SET Hora_saida = "{data_formatada}" WHERE ID = {o_s} '
-        cursor.execute(sql)
-        self.con.commit()
+        try:
+            cursor = self.con.cursor()
+            o_s = self.o_s
+            checar_cliente = f'SELECT * FROM Produto WHERE ID = {o_s}'
+            cursor.execute(checar_cliente)
+            checar_cliente = cursor.fetchall()
+            if len(checar_cliente) < 1:
+                self.check_os = False
+                return
+            data = datetime.now()
+            data_formatada = datetime.strftime(data, "%d/%m/%Y %H:%M")
+            sql = f'UPDATE Produto SET Hora_saida = "{data_formatada}" WHERE ID = {o_s} '
+            cursor.execute(sql)
+            self.con.commit()
+        except sqlite3.OperationalError as e:
+            pass
 
     def update_status(self):
-        cursor = self.con.cursor()
-        o_s = self.o_s
-        status = self.status
-        checar_cliente = f'SELECT * FROM Produto WHERE ID = {o_s}'
-        cursor.execute(checar_cliente)
-        checar_cliente = cursor.fetchall()
-        if len(checar_cliente) < 1:
-            self.check_os = False
-            return
+        try:
+            cursor = self.con.cursor()
+            o_s = self.o_s
+            status = self.status
+            checar_cliente = f'SELECT * FROM Produto WHERE ID = {o_s}'
+            cursor.execute(checar_cliente)
+            checar_cliente = cursor.fetchall()
+            if len(checar_cliente) < 1:
+                self.check_os = False
+                return
 
-        sql = f'UPDATE Produto SET Status = "{status}" WHERE ID = {o_s} '
-        cursor.execute(sql)
-        self.con.commit()
+            sql = f'UPDATE Produto SET Status = "{status}" WHERE ID = {o_s} '
+            cursor.execute(sql)
+            self.con.commit()
+        except sqlite3.OperationalError as e:
+            pass
 
 # if __name__ == '__main__':
 #     for i in range(1000):
