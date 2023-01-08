@@ -16,7 +16,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Rapido Dos Calçados</string>
+   <string>Ponto no Tênis</string>
   </property>
   <property name="windowIcon">
    <iconset resource="img.qrc">
@@ -216,11 +216,6 @@ border-radius:10px</string>
                       </font>
                      </property>
                     </column>
-                    <item>
-                     <property name="text">
-                      <string/>
-                     </property>
-                    </item>
                    </widget>
                   </item>
                  </layout>
@@ -691,14 +686,7 @@ color: rgb(0, 0, 0);
                     </property>
                    </widget>
                   </item>
-                  <item row="6" column="0">
-                   <widget class="QLabel" name="label_4">
-                    <property name="text">
-                     <string>Preço:</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="3" column="0">
+                  <item row="4" column="0">
                    <widget class="QLabel" name="label_7">
                     <property name="maximumSize">
                      <size>
@@ -721,17 +709,14 @@ color: rgb(0, 0, 0);
                     </property>
                    </widget>
                   </item>
-                  <item row="6" column="3">
-                   <widget class="QLineEdit" name="InputPreco">
-                    <property name="maximumSize">
-                     <size>
-                      <width>250</width>
-                      <height>16777215</height>
-                     </size>
+                  <item row="7" column="0">
+                   <widget class="QLabel" name="label_4">
+                    <property name="text">
+                     <string>Preço:</string>
                     </property>
                    </widget>
                   </item>
-                  <item row="8" column="3">
+                  <item row="9" column="3">
                    <widget class="QDateTimeEdit" name="InputPrazo">
                     <property name="minimumSize">
                      <size>
@@ -764,24 +749,28 @@ color: rgb(0, 0, 0);
                     </property>
                    </widget>
                   </item>
-                  <item row="7" column="0">
+                  <item row="8" column="0">
                    <widget class="QLabel" name="label_13">
                     <property name="text">
                      <string>Sinal</string>
                     </property>
                    </widget>
                   </item>
-                  <item row="7" column="3">
-                   <widget class="QLineEdit" name="InputSinal">
-                    <property name="maximumSize">
-                     <size>
-                      <width>250</width>
-                      <height>16777215</height>
-                     </size>
+                  <item row="9" column="0">
+                   <widget class="QLabel" name="label_8">
+                    <property name="text">
+                     <string>Prazo:</string>
                     </property>
                    </widget>
                   </item>
-                  <item row="1" column="0">
+                  <item row="6" column="0">
+                   <widget class="QLabel" name="label">
+                    <property name="text">
+                     <string>Serviço:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="0">
                    <widget class="QLabel" name="label_6">
                     <property name="minimumSize">
                      <size>
@@ -800,41 +789,24 @@ color: rgb(0, 0, 0);
                     </property>
                    </widget>
                   </item>
-                  <item row="8" column="0">
-                   <widget class="QLabel" name="label_8">
-                    <property name="text">
-                     <string>Prazo:</string>
+                  <item row="7" column="3">
+                   <widget class="QLineEdit" name="InputPreco">
+                    <property name="maximumSize">
+                     <size>
+                      <width>250</width>
+                      <height>16777215</height>
+                     </size>
                     </property>
                    </widget>
                   </item>
                   <item row="5" column="0">
-                   <widget class="QLabel" name="label">
+                   <widget class="QLabel" name="label_14">
                     <property name="text">
-                     <string>Serviço:</string>
+                     <string>Par/Pé</string>
                     </property>
                    </widget>
                   </item>
-                  <item row="5" column="3">
-                   <widget class="QLineEdit" name="InputServico">
-                    <property name="maximumSize">
-                     <size>
-                      <width>250</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="3">
-                   <widget class="QLineEdit" name="InputProduto">
-                    <property name="maximumSize">
-                     <size>
-                      <width>250</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="3" column="3">
+                  <item row="4" column="3">
                    <widget class="QFrame" name="frame_7">
                     <property name="styleSheet">
                      <string notr="true">QRadioButton {
@@ -850,16 +822,6 @@ border-radius:3px
                      <enum>QFrame::Raised</enum>
                     </property>
                     <layout class="QGridLayout" name="gridLayout_6">
-                     <item row="0" column="2">
-                      <widget class="QRadioButton" name="radioAzul">
-                       <property name="text">
-                        <string>Azul</string>
-                       </property>
-                       <property name="autoExclusive">
-                        <bool>false</bool>
-                       </property>
-                      </widget>
-                     </item>
                      <item row="1" column="2">
                       <widget class="QRadioButton" name="radioRosa">
                        <property name="text">
@@ -870,10 +832,10 @@ border-radius:3px
                        </property>
                       </widget>
                      </item>
-                     <item row="0" column="0">
-                      <widget class="QRadioButton" name="radioBranco">
+                     <item row="0" column="2">
+                      <widget class="QRadioButton" name="radioAzul">
                        <property name="text">
-                        <string>Branco</string>
+                        <string>Azul</string>
                        </property>
                        <property name="autoExclusive">
                         <bool>false</bool>
@@ -890,10 +852,10 @@ border-radius:3px
                        </property>
                       </widget>
                      </item>
-                     <item row="0" column="3">
-                      <widget class="QRadioButton" name="radioVermelho">
+                     <item row="0" column="0">
+                      <widget class="QRadioButton" name="radioBranco">
                        <property name="text">
-                        <string>Vermelho</string>
+                        <string>Branco</string>
                        </property>
                        <property name="autoExclusive">
                         <bool>false</bool>
@@ -910,30 +872,20 @@ border-radius:3px
                        </property>
                       </widget>
                      </item>
+                     <item row="0" column="3">
+                      <widget class="QRadioButton" name="radioVermelho">
+                       <property name="text">
+                        <string>Vermelho</string>
+                       </property>
+                       <property name="autoExclusive">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
                      <item row="1" column="1">
                       <widget class="QRadioButton" name="radioAmarelo">
                        <property name="text">
                         <string>Amarelo</string>
-                       </property>
-                       <property name="autoExclusive">
-                        <bool>false</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="3" column="0">
-                      <widget class="QRadioButton" name="radioLaranja">
-                       <property name="text">
-                        <string>Laranja</string>
-                       </property>
-                       <property name="autoExclusive">
-                        <bool>false</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="3" column="2">
-                      <widget class="QRadioButton" name="radioBicolor">
-                       <property name="text">
-                        <string>Bicolor</string>
                        </property>
                        <property name="autoExclusive">
                         <bool>false</bool>
@@ -960,6 +912,16 @@ border-radius:3px
                        </property>
                       </widget>
                      </item>
+                     <item row="3" column="0">
+                      <widget class="QRadioButton" name="radioLaranja">
+                       <property name="text">
+                        <string>Laranja</string>
+                       </property>
+                       <property name="autoExclusive">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
                      <item row="3" column="3">
                       <widget class="QRadioButton" name="radioMarron">
                        <property name="text">
@@ -970,17 +932,20 @@ border-radius:3px
                        </property>
                       </widget>
                      </item>
+                     <item row="3" column="2">
+                      <widget class="QRadioButton" name="radioBicolor">
+                       <property name="text">
+                        <string>Bicolor</string>
+                       </property>
+                       <property name="autoExclusive">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
                     </layout>
                    </widget>
                   </item>
-                  <item row="4" column="0">
-                   <widget class="QLabel" name="label_14">
-                    <property name="text">
-                     <string>Par/Pe</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="4" column="3">
+                  <item row="5" column="3">
                    <widget class="QFrame" name="frame_24">
                     <property name="styleSheet">
                      <string notr="true">QRadioButton {
@@ -999,7 +964,7 @@ border-radius:3px
                      <item row="0" column="0">
                       <widget class="QRadioButton" name="radioPe">
                        <property name="text">
-                        <string>Pe</string>
+                        <string>Pé</string>
                        </property>
                       </widget>
                      </item>
@@ -1011,6 +976,36 @@ border-radius:3px
                       </widget>
                      </item>
                     </layout>
+                   </widget>
+                  </item>
+                  <item row="6" column="3">
+                   <widget class="QLineEdit" name="InputServico">
+                    <property name="maximumSize">
+                     <size>
+                      <width>250</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="8" column="3">
+                   <widget class="QLineEdit" name="InputSinal">
+                    <property name="maximumSize">
+                     <size>
+                      <width>250</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="3">
+                   <widget class="QLineEdit" name="InputProduto">
+                    <property name="maximumSize">
+                     <size>
+                      <width>250</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
                    </widget>
                   </item>
                  </layout>
@@ -1183,8 +1178,8 @@ border-radius:10px
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>81</width>
-                       <height>452</height>
+                       <width>882</width>
+                       <height>648</height>
                       </rect>
                      </property>
                      <layout class="QGridLayout" name="gridLayout_14">
@@ -1210,11 +1205,6 @@ border-radius:10px
 background-color: rgb(226, 226, 226);
 border-radius:10px</string>
                         </property>
-                        <column>
-                         <property name="text">
-                          <string notr="true">1</string>
-                         </property>
-                        </column>
                        </widget>
                       </item>
                       <item row="0" column="1">
@@ -1555,8 +1545,8 @@ border-radius:10px
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>81</width>
-                       <height>69</height>
+                       <width>882</width>
+                       <height>605</height>
                       </rect>
                      </property>
                      <layout class="QGridLayout" name="gridLayout_17">
@@ -1582,11 +1572,6 @@ border-radius:10px
 background-color: rgb(226, 226, 226);
 border-radius:10px</string>
                         </property>
-                        <column>
-                         <property name="text">
-                          <string notr="true">1</string>
-                         </property>
-                        </column>
                        </widget>
                       </item>
                      </layout>

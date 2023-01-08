@@ -65,7 +65,6 @@ class Interface(QMainWindow, Ui_MainWindow):
         self.username = getenv("USERNAME")
 
         # Paginas Botoes
-        # self.CadastrarClienteBtnPag.clicked.connect(lambda: self.PaginaCentral.setCurrentWidget(self.CadastroClientePage))
         self.btnPageCadastro.clicked.connect(
             lambda: self.PaginaCentral.setCurrentWidget(self.pageCadastro))
         self.btnPagVoltar.clicked.connect(
@@ -340,78 +339,79 @@ class Interface(QMainWindow, Ui_MainWindow):
             cnv.scale(0.9, 0.65)
 
             cnv.drawString(
-                0, 1275, f'         OS:          {resultado[0]}       ')
+                0, 1275, f'           OS:          {resultado[0]}       ')
             cnv.setFontSize(10)
             cnv.drawString(
-                0, 1260, f'   Ponto do Tênis                         {loja_cliente}')
-            cnv.drawString(0, 1245, f'   Rua do imperador 264 loja 19/Centro')
-            cnv.drawString(0, 1230, f'   Petrópolis')
-            cnv.drawString(0, 1215, f'   Telef.: (00) 0000-0000')
+                0, 1260, f'     Ponto do Tênis                         {loja_cliente}')
             cnv.drawString(
-                0, 1200, f'   Horário: de Seg. a Sex. das 09:00 as 19:00')
+                0, 1245, f'     Rua do imperador 264 loja 19/Centro')
+            cnv.drawString(0, 1230, f'     Petrópolis')
+            cnv.drawString(0, 1215, f'     Telef.: (00) 0000-0000')
+            cnv.drawString(
+                0, 1200, f'     Horário: de Seg. a Sex. das 09:00 as 19:00')
             cnv.drawString(
                 0, 1185, f'_______________________________________________')
-            cnv.drawString(0, 1170, f'   {resultado[10]} {resultado[12]}')
+            cnv.drawString(0, 1170, f'     {resultado[10]} {resultado[12]}')
             cnv.drawString(
                 0, 1155, f'_______________________________________________')
             cnv.setFontSize(12)
-            cnv.drawString(0, 1140, f'   O.S: {resultado[0]}')
+            cnv.drawString(0, 1140, f'     O.S: {resultado[0]}')
             cnv.setFontSize(10)
             cnv.drawString(
-                0, 1125, f'   {resultado[6]}   Prazo: {resultado[5]}')
+                0, 1125, f'     {resultado[6]}   Prazo: {resultado[5]}')
             cnv.drawString(
                 0, 1110, f'_______________________________________________')
-            cnv.drawString(0, 1095, f'   Impresso por: {funcionario}')
+            cnv.drawString(0, 1095, f'     Impresso por: {funcionario}')
             cnv.drawString(
                 0, 1080, f'_______________________________________________')
-            cnv.drawString(0, 1065, f'   It Objeto    Cor: {resultado[2]}')
-            cnv.drawString(0, 1050, f'   Serviço: {resultado[3]}')
+            cnv.drawString(0, 1065, f'     It Objeto    Cor: {resultado[2]}')
+            cnv.drawString(0, 1050, f'     Serviço: {resultado[3]}')
             cnv.drawString(
                 0, 1035, f'_______________________________________________')
             cnv.drawString(
-                0, 1020, f'   {resultado[4]} {resultado[1]} {resultado[2]}')
+                0, 1020, f'     {resultado[4]} {resultado[1]} {resultado[2]}')
             contador = 0
             y = 1005
             for servico in servicos:
                 if len(preco_lista) > 1:
                     cnv.drawString(
-                        0, y, f'                       {servico}           R${preco_lista[contador]}')
+                        0, y, f'                         {servico}           R${preco_lista[contador]}')
                 else:
                     cnv.drawString(
-                        0, y, f'                       {servico}           R${preco_cliente}')
+                        0, y, f'                         {servico}           R${preco_cliente}')
                 y -= 15
                 contador += 1
             cnv.drawString(
                 0, y - 15, f' ______________________________________________')
             cnv.drawString(
-                0, y - 30, f'                        SubTotal: R$ {preco}')
+                0, y - 30, f'                          SubTotal: R$ {preco}')
             if sinal == 0:
                 cnv.drawString(
-                    0, y - 45, f'                        Sinal:    R$ 00.00')
+                    0, y - 45, f'                          Sinal:    R$ 00.00')
                 cnv.drawString(
-                    0, y - 60, f'                        Total:    R$ {preco}')
+                    0, y - 60, f'                          Total:    R$ {preco}')
             else:
                 cnv.drawString(
-                    0, y - 45, f'                        Sinal:    R$ {sinal}')
+                    0, y - 45, f'                          Sinal:    R$ {sinal}')
                 cnv.drawString(
-                    0, y - 60, f'                        Total:    R$ {preco_sinal}')
+                    0, y - 60, f'                          Total:    R$ {preco_sinal}')
             cnv.drawString(
                 0, y - 75, f' ______________________________________________')
             cnv.drawString(
-                0, y - 90, f'    Prezado cliente! Preserve este Documento')
+                0, y - 90, f'      Prezado cliente! Preserve este Documento')
             cnv.drawString(
-                0, y - 105, f'    pois será através dele, que nossos')
+                0, y - 105, f'      pois será através dele, que nossos')
             cnv.drawString(
-                0, y - 120, f'    funcionarios os indentificarão os objetos')
-            cnv.drawString(0, y - 135, f'    aqui deixados.')
+                0, y - 120, f'      funcionarios os indentificarão os objetos')
+            cnv.drawString(0, y - 135, f'      aqui deixados.')
             cnv.drawString(
                 0, y - 150, f' ______________________________________________')
             cnv.drawString(
-                0, y - 165, f'        NÃO NOS RESPONSABILIZAMOS POR')
-            cnv.drawString(0, y - 180, f'        OBJETOS DEIXADOS POR MAIS')
-            cnv.drawString(0, y - 195, f'            DE 30 DIAS.')
+                0, y - 165, f'          NÃO NOS RESPONSABILIZAMOS POR')
+            cnv.drawString(0, y - 180, f'          OBJETOS DEIXADOS POR MAIS')
+            cnv.drawString(0, y - 195, f'              DE 30 DIAS.')
             cnv.drawString(
-                0, y - 210, f'    DATA: __/__/____     Ass.:__________________')
+                0, y - 210, f'      DATA: __/__/____     Ass.:__________________')
             cnv.setPageSize((300, 840))
             cnv.save()
 
@@ -698,7 +698,9 @@ class Interface(QMainWindow, Ui_MainWindow):
                 return
             os_produto = int(os_produto)
 
-            finalizar = CrudLoja(o_s=os_produto, produtos='os')
+            finalizar = CrudLoja(
+                o_s=os_produto, produtos='os', status='Entregue')
+            finalizar.update_status()
             finalizar.update()
             finalizar.mostrar_produtos()
             resultado = finalizar.resultados
